@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spaceling Designs — Architecture & Interior</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Suisse+Int%27l:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white:    #FAFAF8;
+  --off:      #F2F0EB;
+  --ink:      #1A1916;
+  --ink-soft: #3A3830;
+  --mid:      #8C8880;
+  --rule:     #E0DDD6;
+  --accent:   #C8A86B;
+  --accent-dk:#A08548;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--ink);
+  overflow-x: hidden;
+  cursor: none;
+}
+a { text-decoration: none; color: inherit; }
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+button { font-family: 'DM Sans', sans-serif; cursor: pointer; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 1px; }
+::-webkit-scrollbar-thumb { background: var(--ink); }
+
+/* CURSOR */
+#cur { position: fixed; width: 6px; height: 6px; background: var(--ink); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .18s, height .18s; }
+#cur-ring { position: fixed; width: 30px; height: 30px; border: 1px solid rgba(26,25,22,.35); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: width .28s, height .28s, border-color .3s; }
+body:hover #cur, body:hover #cur-ring { opacity: 1; }
+
+/* ── LOADER ── */
+#loader {
+  position: fixed; inset: 0; background: var(--white); z-index: 9999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+  transition: opacity .9s ease, visibility .9s ease;
+}
+.ld-logo { font-family: 'EB Garamond', serif; font-size: 1.5rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
+.ld-line { width: 120px; height: 1px; background: var(--rule); overflow: hidden; }
+.ld-line-fill { height: 100%; width: 0; background: var(--ink); animation: ldFill 1.9s cubic-bezier(.77,0,.18,1) forwards; }
+@keyframes ldFill { to { width: 100%; } }
+.ld-sub { font-size: .65rem; letter-spacing: .36em; text-transform: uppercase; color: var(--mid); }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 800;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 28px 60px;
+  transition: padding .4s, background .4s, border-color .4s;
+  border-bottom: 1px solid transparent;
+  mix-blend-mode: normal;
+}
+nav.stuck {
+  padding: 18px 60px;
+  background: rgba(250,250,248,.96);
+  backdrop-filter: blur(16px);
+  border-bottom-color: var(--rule);
+}
+.logo {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.18rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  display: flex; align-items: baseline; gap: 6px;
+}
+.logo-sub { font-family: 'DM Sans', sans-serif; font-size: .52rem; letter-spacing: .3em; color: var(--mid); font-weight: 300; }
+.nav-links { display: flex; gap: 44px; list-style: none; align-items: center; }
+.nav-links a {
+  font-size: .68rem; font-weight: 400; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-soft); position: relative; transition: color .3s;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -3px; left: 0;
+  width: 0; height: 1px; background: var(--ink); transition: width .3s ease;
+}
+.nav-links a:hover::after { width: 100%; }
+.nav-links .cta-link {
+  border: 1px solid var(--ink); padding: 9px 24px;
+  transition: background .3s, color .3s;
+}
+.nav-links .cta-link:hover { background: var(--ink); color: var(--white); }
+.nav-links .cta-link::after { display: none; }
+.mob-btn { display: none; background: none; border: none; flex-direction: column; gap: 5px; padding: 4px; }
+.mob-btn span { display: block; width: 22px; height: 1px; background: var(--ink); transition: .3s; }
+
+/* ── HERO ── */
+#hero { height: 100vh; min-height: 650px; position: relative; overflow: hidden; background: var(--ink); }
+.hero-img { position: absolute; inset: 0; }
+.hero-img img { filter: brightness(.52) contrast(1.06); transition: transform 10s ease; }
+#hero:hover .hero-img img { transform: scale(1.03); }
+.hero-content {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  justify-content: flex-end; padding: 0 60px 80px;
+}
+.hero-eyebrow {
+  font-size: .6rem; letter-spacing: .46em; text-transform: uppercase;
+  color: rgba(250,250,248,.42); margin-bottom: 20px;
+  opacity: 0; animation: fadeUp .8s .5s forwards;
+}
+.hero-h1 {
+  font-family: 'EB Garamond', serif;
+  font-size: clamp(3.2rem, 6vw, 6.5rem);
+  font-weight: 400; line-height: .95; color: var(--white);
+  opacity: 0; animation: fadeUp .9s .7s forwards;
+}
+.hero-h1 em { font-style: italic; }
+.hero-actions {
+  display: flex; gap: 16px; margin-top: 44px;
+  opacity: 0; animation: fadeUp .8s .9s forwards;
+}
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 36px; border: 1px solid rgba(250,250,248,.35);
+  color: var(--white); font-size: .64rem; letter-spacing: .2em; text-transform: uppercase;
+  transition: border-color .3s, background .3s;
+}
+.btn-ghost:hover { border-color: var(--white); background: rgba(250,250,248,.08); }
+.btn-solid {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 36px; background: var(--white);
+  color: var(--ink); font-size: .64rem; letter-spacing: .2em; text-transform: uppercase;
+  border: 1px solid var(--white);
+  transition: background .3s, color .3s;
+}
+.btn-solid:hover { background: transparent; color: var(--white); }
+.hero-scroll {
+  position: absolute; bottom: 40px; right: 60px;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  opacity: 0; animation: fadeUp .8s 1.2s forwards;
+}
+.hero-scroll-txt { font-size: .55rem; letter-spacing: .38em; text-transform: uppercase; color: rgba(250,250,248,.35); writing-mode: vertical-rl; }
+.hero-scroll-line { width: 1px; height: 44px; background: linear-gradient(var(--accent), transparent); }
+.hero-stat-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  border-top: 1px solid rgba(250,250,248,.12);
+  display: flex;
+  opacity: 0; animation: fadeUp .8s 1.1s forwards;
+}
+.hero-stat {
+  flex: 1; padding: 24px 40px; border-right: 1px solid rgba(250,250,248,.1);
+  text-align: center;
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat-n { font-family: 'EB Garamond', serif; font-size: 2rem; color: var(--white); line-height: 1; }
+.hero-stat-l { font-size: .56rem; letter-spacing: .26em; text-transform: uppercase; color: rgba(250,250,248,.36); margin-top: 5px; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+
+/* ── SECTION COMMON ── */
+.s-eyebrow { font-size: .6rem; letter-spacing: .42em; text-transform: uppercase; color: var(--mid); margin-bottom: 16px; }
+.s-title { font-family: 'EB Garamond', serif; font-size: clamp(2.2rem, 3.5vw, 3.4rem); line-height: 1.05; font-weight: 400; }
+.s-title em { font-style: italic; }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.25,.46,.45,.94), transform .8s cubic-bezier(.25,.46,.45,.94); }
+.reveal.in { opacity: 1; transform: none; }
+.d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; } .d3 { transition-delay: .3s; } .d4 { transition-delay: .4s; }
+
+/* ── MARQUEE ── */
+.marquee-wrap { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); overflow: hidden; white-space: nowrap; background: var(--off); padding: 16px 0; }
+.marquee-track { display: inline-flex; gap: 56px; animation: mq 36s linear infinite; }
+.marquee-track span { font-size: .58rem; letter-spacing: .36em; text-transform: uppercase; color: var(--mid); }
+.marquee-track .sep { color: var(--accent); }
+@keyframes mq { to { transform: translateX(-50%); } }
+
+/* ── ABOUT ── */
+#about { display: grid; grid-template-columns: 1fr 1fr; min-height: 90vh; }
+.about-img-wrap { position: relative; overflow: hidden; }
+.about-img-wrap img { transition: transform .8s ease; }
+.about-img-wrap:hover img { transform: scale(1.03); }
+.about-badge {
+  position: absolute; bottom: 0; right: 0;
+  background: var(--white); padding: 16px 28px;
+  font-size: .6rem; letter-spacing: .22em; text-transform: uppercase; color: var(--ink);
+  border-top: 1px solid var(--rule); border-left: 1px solid var(--rule);
+}
+.about-text {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 72px; background: var(--off);
+  border-left: 1px solid var(--rule);
+}
+.about-quote {
+  font-family: 'EB Garamond', serif; font-size: 1.3rem; line-height: 1.7;
+  font-style: italic; color: var(--ink-soft);
+  border-left: 2px solid var(--accent); padding-left: 22px;
+  margin: 28px 0 24px;
+}
+.about-body { font-size: .84rem; line-height: 1.95; color: var(--mid); font-weight: 300; }
+.svc-list { margin-top: 36px; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); }
+.svc-item {
+  background: var(--off); padding: 14px 18px;
+  font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--mid);
+  display: flex; align-items: center; gap: 10px;
+  transition: background .3s, color .3s;
+}
+.svc-item::before { content: ''; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+.svc-item:hover { background: var(--white); color: var(--ink); }
+
+/* ── PROJECTS ── */
+#projects { padding: 100px 60px; }
+.proj-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; }
+.filter-row { display: flex; gap: 4px; }
+.f-btn {
+  padding: 8px 20px; border: 1px solid var(--rule); background: none;
+  font-size: .6rem; letter-spacing: .18em; text-transform: uppercase; color: var(--mid);
+  transition: all .3s;
+}
+.f-btn.on, .f-btn:hover { border-color: var(--ink); color: var(--ink); background: var(--off); }
+
+/* Editorial grid — Stapati style: full-bleed, varying sizes */
+.proj-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; }
+.pc { position: relative; overflow: hidden; cursor: pointer; }
+.pc:nth-child(1) { grid-column: span 8; aspect-ratio: 16/9; }
+.pc:nth-child(2) { grid-column: span 4; aspect-ratio: 3/4; }
+.pc:nth-child(3) { grid-column: span 4; aspect-ratio: 3/4; }
+.pc:nth-child(4) { grid-column: span 4; aspect-ratio: 3/4; }
+.pc:nth-child(5) { grid-column: span 4; aspect-ratio: 3/4; }
+.pc:nth-child(6) { grid-column: span 7; aspect-ratio: 16/9; }
+.pc:nth-child(7) { grid-column: span 5; aspect-ratio: 16/9; }
+.pc img { transition: transform .8s cubic-bezier(.25,.46,.45,.94), filter .5s; filter: brightness(.82); }
+.pc:hover img { transform: scale(1.06); filter: brightness(.6); }
+.pc-overlay {
+  position: absolute; inset: 0; padding: 28px 32px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  background: linear-gradient(to top, rgba(26,25,22,.9) 0%, rgba(26,25,22,.1) 44%, transparent 70%);
+}
+.pc-cat { font-size: .55rem; letter-spacing: .26em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.pc-name { font-family: 'EB Garamond', serif; font-size: 1.5rem; line-height: 1.08; color: var(--white); }
+.pc-loc { font-size: .66rem; color: rgba(250,250,248,.44); margin-top: 5px; }
+.pc-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 16px; padding: 8px 18px;
+  border: 1px solid rgba(250,250,248,.3); color: var(--white);
+  font-size: .58rem; letter-spacing: .18em; text-transform: uppercase;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .3s, transform .3s, border-color .3s;
+}
+.pc:hover .pc-cta { opacity: 1; transform: none; }
+.pc-cta:hover { border-color: var(--white); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(26,25,22,.97); z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden; transition: opacity .4s, visibility .4s;
+}
+.modal-overlay.open { opacity: 1; visibility: visible; }
+.modal-box {
+  width: min(920px,93vw); max-height: 90vh; overflow-y: auto;
+  background: var(--white); position: relative;
+}
+.modal-box::-webkit-scrollbar { width: 1px; }
+.modal-box::-webkit-scrollbar-thumb { background: var(--accent); }
+.modal-close {
+  position: sticky; top: 0; float: right; width: 48px; height: 48px;
+  background: var(--ink); border: none; display: flex; align-items: center; justify-content: center;
+  z-index: 10; margin-left: auto;
+}
+.modal-close svg { stroke: var(--white); width: 16px; height: 16px; fill: none; stroke-width: 1.5; }
+.modal-hero { height: 380px; overflow: hidden; position: relative; }
+.modal-hero img { filter: brightness(.85); }
+.modal-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,25,22,.7) 0%, transparent 50%); }
+.modal-hero-label { position: absolute; bottom: 32px; left: 40px; z-index: 2; }
+.modal-hero-cat { font-size: .56rem; letter-spacing: .3em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.modal-hero-name { font-family: 'EB Garamond', serif; font-size: 2.6rem; font-weight: 400; line-height: 1; color: var(--white); }
+.modal-hero-loc { font-size: .72rem; color: rgba(250,250,248,.5); margin-top: 6px; }
+.modal-content { padding: 48px 48px 56px; }
+.modal-meta { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--rule); margin-bottom: 44px; }
+.modal-meta-cell { background: var(--white); padding: 22px 24px; }
+.mm-lbl { font-size: .56rem; letter-spacing: .22em; text-transform: uppercase; color: var(--mid); margin-bottom: 6px; }
+.mm-val { font-size: .9rem; color: var(--ink); }
+.modal-quote { font-family: 'EB Garamond', serif; font-size: 1.15rem; line-height: 1.8; font-style: italic; color: var(--ink-soft); border-left: 2px solid var(--accent); padding-left: 22px; margin-bottom: 28px; }
+.modal-body { font-size: .84rem; line-height: 1.95; color: var(--mid); font-weight: 300; }
+.modal-imgs { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 28px; }
+.modal-imgs .mi { aspect-ratio: 16/10; overflow: hidden; }
+.modal-imgs .mi img { filter: brightness(.9); transition: filter .4s; }
+.modal-imgs .mi:hover img { filter: brightness(1); }
+.modal-specs { margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--rule); }
+.modal-specs-title { font-size: .58rem; letter-spacing: .28em; text-transform: uppercase; color: var(--mid); margin-bottom: 16px; }
+.spec-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: .8rem; }
+.spec-row span:first-child { color: var(--mid); }
+
+/* ── PROCESS ── */
+#process { padding: 100px 60px; background: var(--off); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.process-grid { display: grid; grid-template-columns: repeat(5,1fr); margin-top: 64px; border: 1px solid var(--rule); }
+.p-step { padding: 44px 32px; border-right: 1px solid var(--rule); position: relative; transition: background .3s; }
+.p-step:last-child { border-right: none; }
+.p-step:hover { background: var(--white); }
+.p-num { font-family: 'EB Garamond', serif; font-size: 4rem; color: var(--rule); line-height: 1; margin-bottom: 16px; }
+.p-ttl { font-size: .8rem; font-weight: 500; letter-spacing: .06em; margin-bottom: 10px; text-transform: uppercase; color: var(--ink); }
+.p-body { font-size: .76rem; line-height: 1.85; color: var(--mid); font-weight: 300; }
+.p-accent-line { position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--accent); transition: width .4s ease; }
+.p-step:hover .p-accent-line { width: 100%; }
+
+/* ── TOOLS ── */
+#tools { padding: 100px 60px; background: var(--white); }
+.tools-intro { max-width: 640px; margin-bottom: 56px; }
+.tools-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.t-card { background: var(--white); padding: 44px 36px; transition: background .3s; }
+.t-card:hover { background: var(--off); }
+.t-badge { display: inline-block; padding: 3px 12px; border: 1px solid var(--rule); font-size: .54rem; letter-spacing: .24em; text-transform: uppercase; color: var(--mid); margin-bottom: 18px; }
+.t-name { font-family: 'EB Garamond', serif; font-size: 1.4rem; margin-bottom: 10px; }
+.t-desc { font-size: .78rem; line-height: 1.85; color: var(--mid); font-weight: 300; }
+.t-demo { margin-top: 22px; padding: 22px; background: var(--off); border: 1px solid var(--rule); }
+.demo-lbl { font-size: .56rem; letter-spacing: .24em; text-transform: uppercase; color: var(--mid); margin-bottom: 12px; }
+
+/* Budget */
+input[type=range] { width: 100%; accent-color: var(--ink); cursor: pointer; margin-bottom: 10px; height: 1px; }
+.budget-num { font-family: 'EB Garamond', serif; font-size: 2rem; color: var(--ink); margin-bottom: 4px; }
+.budget-area { font-size: .66rem; color: var(--mid); margin-bottom: 12px; }
+.b-row { display: flex; justify-content: space-between; font-size: .7rem; padding: 6px 0; border-bottom: 1px solid var(--rule); color: var(--mid); }
+.b-row span:last-child { color: var(--ink); }
+.b-bar-wrap { height: 2px; background: var(--rule); margin-top: 3px; overflow: hidden; }
+.b-bar-fill { height: 100%; background: var(--ink); transition: width .6s ease; }
+.budget-quality { display: flex; gap: 6px; margin-top: 14px; }
+.bq { padding: 6px 14px; border: 1px solid var(--rule); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; color: var(--mid); background: var(--white); transition: all .3s; }
+.bq.on { border-color: var(--ink); color: var(--ink); background: var(--off); }
+
+/* Style finder */
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { padding: 6px 14px; border: 1px solid var(--rule); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; color: var(--mid); background: var(--white); transition: all .3s; }
+.chip.sel { border-color: var(--ink); color: var(--ink); background: var(--off); }
+.chip-result { margin-top: 14px; font-size: .76rem; line-height: 1.8; color: var(--mid); min-height: 56px; }
+.swatch { width: 32px; height: 32px; border-radius: 0; cursor: pointer; }
+
+/* Timeline */
+.t-sel { width: 100%; padding: 9px 14px; background: var(--white); border: 1px solid var(--rule); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: .8rem; outline: none; cursor: pointer; margin-bottom: 8px; -webkit-appearance: none; }
+.t-sel option { background: var(--white); }
+.tl-phase { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.tl-phase:last-child { border-bottom: none; }
+.tl-dot-sm { width: 6px; height: 6px; border-radius: 50%; border: 1px solid var(--accent); flex-shrink: 0; margin-top: 6px; }
+.tl-phase-name { font-size: .74rem; color: var(--ink); margin-bottom: 2px; }
+.tl-phase-dur { font-size: .64rem; color: var(--accent); }
+.tl-total { margin-top: 12px; padding: 10px 0 0; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; font-size: .72rem; color: var(--mid); }
+.tl-total span:last-child { color: var(--ink); }
+
+/* AI */
+.t-inp { width: 100%; padding: 10px 14px; background: var(--white); border: 1px solid var(--rule); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: .82rem; outline: none; transition: border-color .3s; margin-bottom: 10px; display: block; }
+.t-inp:focus { border-color: var(--ink); }
+.t-inp::placeholder { color: var(--mid); }
+.ai-loading { display: none; align-items: center; gap: 10px; font-size: .72rem; color: var(--mid); }
+.ai-loading.show { display: flex; }
+.ai-dot { width: 4px; height: 4px; background: var(--ink); border-radius: 50%; animation: pulse 1.2s ease infinite; }
+.ai-dot:nth-child(2) { animation-delay: .2s; }
+.ai-dot:nth-child(3) { animation-delay: .4s; }
+@keyframes pulse { 0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:1;transform:scale(1.1)} }
+.ai-out { font-family: 'EB Garamond', serif; font-size: .95rem; line-height: 1.8; color: var(--ink-soft); font-style: italic; margin-top: 12px; min-height: 56px; }
+.mood-row { display: flex; gap: 7px; flex-wrap: wrap; min-height: 40px; align-items: center; }
+
+/* Action btn */
+.t-action { width: 100%; padding: 12px; background: var(--ink); border: none; font-family: 'DM Sans', sans-serif; font-size: .6rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--white); transition: background .3s; }
+.t-action:hover { background: var(--ink-soft); }
+.t-action:disabled { opacity: .35; cursor: default; }
+.form-success { padding: 14px; background: #F0F7F0; border: 1px solid #C8DFC8; font-size: .76rem; color: #3A6A3A; margin-top: 12px; display: none; text-align: center; }
+
+/* Why Spaceling */
+.why-item { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 14px; }
+.why-num { font-family: 'EB Garamond', serif; font-size: 1.3rem; color: var(--accent); line-height: 1; flex-shrink: 0; width: 22px; }
+.why-text { font-size: .78rem; line-height: 1.75; color: var(--mid); }
+
+/* ── TESTIMONIALS ── */
+#testi { padding: 100px 60px; background: var(--off); border-top: 1px solid var(--rule); }
+.testi-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--rule); margin-top: 52px; }
+.t-card-item { background: var(--off); padding: 52px 44px; position: relative; transition: background .3s; }
+.t-card-item:hover { background: var(--white); }
+.t-open { font-family: 'EB Garamond', serif; font-size: 5rem; line-height: 1; color: var(--accent); opacity: .2; position: absolute; top: 24px; left: 36px; }
+.t-text { font-family: 'EB Garamond', serif; font-size: 1.05rem; line-height: 1.85; font-style: italic; color: var(--ink-soft); padding-top: 52px; }
+.t-author { display: flex; align-items: center; gap: 14px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--rule); }
+.t-av { width: 40px; height: 40px; border-radius: 50%; background: var(--ink); display: flex; align-items: center; justify-content: center; font-family: 'EB Garamond', serif; color: var(--white); font-size: 1rem; flex-shrink: 0; }
+.t-name { font-size: .82rem; font-weight: 500; }
+.t-role { font-size: .62rem; color: var(--mid); margin-top: 2px; letter-spacing: .06em; }
+.t-stars { color: var(--accent); font-size: .7rem; letter-spacing: 3px; margin-top: 3px; }
+
+/* ── CONTACT ── */
+#contact { padding: 100px 60px; background: var(--white); border-top: 1px solid var(--rule); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 56px; }
+.c-item { display: flex; gap: 18px; margin-bottom: 28px; }
+.c-icn { width: 40px; height: 40px; flex-shrink: 0; border: 1px solid var(--rule); display: flex; align-items: center; justify-content: center; }
+.c-icn svg { width: 16px; height: 16px; stroke: var(--ink); fill: none; stroke-width: 1.5; }
+.c-lbl { font-size: .56rem; letter-spacing: .22em; text-transform: uppercase; color: var(--mid); margin-bottom: 4px; }
+.c-val { font-size: .86rem; color: var(--ink); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.c-fi { width: 100%; padding: 12px 14px; background: var(--off); border: 1px solid var(--rule); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: .84rem; outline: none; transition: border-color .3s; }
+.c-fi:focus { border-color: var(--ink); }
+.c-fi::placeholder { color: var(--mid); }
+.c-fl { display: block; font-size: .56rem; letter-spacing: .18em; text-transform: uppercase; color: var(--mid); margin-bottom: 6px; }
+.c-fg { margin-bottom: 12px; }
+select.c-fi { -webkit-appearance: none; cursor: pointer; }
+select.c-fi option { background: var(--off); }
+textarea.c-fi { resize: vertical; min-height: 110px; }
+.contact-success { display: none; padding: 18px; text-align: center; border: 1px solid #C8DFC8; background: #F0F7F0; font-size: .8rem; color: #3A6A3A; margin-top: 12px; }
+
+/* ── FOOTER ── */
+footer { padding: 40px 60px; border-top: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; background: var(--off); }
+.f-logo { font-family: 'EB Garamond', serif; font-size: 1.1rem; letter-spacing: .08em; text-transform: uppercase; }
+.f-links { display: flex; gap: 32px; flex-wrap: wrap; }
+.f-links a { font-size: .6rem; letter-spacing: .18em; text-transform: uppercase; color: var(--mid); transition: color .3s; }
+.f-links a:hover { color: var(--ink); }
+.f-copy { width: 100%; text-align: center; font-size: .58rem; color: var(--mid); margin-top: 4px; letter-spacing: .1em; }
+.portal-link-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 22px; border: 1px solid var(--ink);
+  font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink);
+  transition: background .3s, color .3s;
+}
+.portal-link-btn:hover { background: var(--ink); color: var(--white); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  nav, nav.stuck { padding: 20px 40px; }
+  #about { grid-template-columns: 1fr; }
+  .about-text { border-left: none; border-top: 1px solid var(--rule); }
+  .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  #projects, #process, #tools, #testi, #contact, footer { padding-left: 40px; padding-right: 40px; }
+  .hero-content { padding: 0 40px 80px; }
+  .hero-scroll { right: 40px; }
+  .hero-stat-bar { flex-wrap: wrap; }
+  .process-grid { grid-template-columns: repeat(3,1fr); }
+  .tools-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 768px) {
+  #hero { min-height: 100svh; }
+  .hero-h1 { font-size: 3rem; }
+  .hero-stat-bar { display: none; }
+  .hero-scroll { display: none; }
+  nav { padding: 18px 24px; }
+  nav.stuck { padding: 14px 24px; }
+  .nav-links { display: none; }
+  .mob-btn { display: flex; }
+  .proj-header { flex-direction: column; gap: 18px; align-items: flex-start; }
+  .proj-grid { grid-template-columns: 1fr 1fr; }
+  .pc:nth-child(n) { grid-column: span 1; aspect-ratio: 3/4; }
+  .pc:nth-child(1) { grid-column: span 2; aspect-ratio: 16/9; }
+  .process-grid { grid-template-columns: 1fr 1fr; }
+  .tools-grid { grid-template-columns: 1fr; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  footer { padding: 32px 24px; }
+  #projects, #process, #tools, #testi, #contact, footer { padding-left: 24px; padding-right: 24px; }
+  .hero-content { padding: 0 24px 60px; }
+  .modal-content { padding: 28px 24px 40px; }
+  .modal-meta { grid-template-columns: 1fr 1fr; }
+  .modal-imgs { grid-template-columns: 1fr; }
+  .about-text { padding: 56px 32px; }
+}
+@media (max-width: 480px) {
+  .hero-h1 { font-size: 2.4rem; }
+  .process-grid { grid-template-columns: 1fr; }
+  .proj-grid { grid-template-columns: 1fr; }
+  .pc:nth-child(1) { grid-column: span 1; aspect-ratio: 4/3; }
+  .modal-meta { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld-logo">Spaceling Designs</div>
+  <div class="ld-line"><div class="ld-line-fill"></div></div>
+  <div class="ld-sub">Architecture · Interior · Landscape</div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo">
+    Spaceling Designs
+    <span class="logo-sub">Kerala</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">Studio</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#tools">Tools</a></li>
+    <li><a href="client-portal.html" class="cta-link">Client Portal</a></li>
+    <li><a href="#contact" class="cta-link">Enquire</a></li>
+  </ul>
+  <button class="mob-btn" onclick="toggleNav()" aria-label="Menu">
+    <span id="mb1"></span><span id="mb2"></span><span id="mb3"></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-img">
+    <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1800&auto=format&fit=crop&q=85" alt="Architecture — Spaceling Designs">
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Architecture &middot; Interior &middot; Landscape &middot; Event Space</p>
+    <h1 class="hero-h1">
+      Spaces That<br><em>Transcend</em>
+    </h1>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-solid">View Portfolio</a>
+      <a href="#contact" class="btn-ghost">Begin a Project</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-txt">Scroll</div>
+    <div class="hero-scroll-line"></div>
+  </div>
+  <div class="hero-stat-bar">
+    <div class="hero-stat"><div class="hero-stat-n">45+</div><div class="hero-stat-l">Projects Delivered</div></div>
+    <div class="hero-stat"><div class="hero-stat-n">6+</div><div class="hero-stat-l">Years Experience</div></div>
+    <div class="hero-stat"><div class="hero-stat-n">100%</div><div class="hero-stat-l">Client Satisfaction</div></div>
+    <div class="hero-stat"><div class="hero-stat-n">4</div><div class="hero-stat-l">Service Disciplines</div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Architecture</span><span class="sep">/</span>
+    <span>Interior Design</span><span class="sep">/</span>
+    <span>Landscape</span><span class="sep">/</span>
+    <span>Event Space Design</span><span class="sep">/</span>
+    <span>Residential</span><span class="sep">/</span>
+    <span>Commercial</span><span class="sep">/</span>
+    <span>3D Visualisation</span><span class="sep">/</span>
+    <span>Project Management</span><span class="sep">/</span>
+    <span>Architecture</span><span class="sep">/</span>
+    <span>Interior Design</span><span class="sep">/</span>
+    <span>Landscape</span><span class="sep">/</span>
+    <span>Event Space Design</span><span class="sep">/</span>
+    <span>Residential</span><span class="sep">/</span>
+    <span>Commercial</span><span class="sep">/</span>
+    <span>3D Visualisation</span><span class="sep">/</span>
+    <span>Project Management</span><span class="sep">/</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-img-wrap reveal">
+    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&auto=format&fit=crop&q=85&crop=faces" alt="Ar. Muhammed Shafeeque M">
+    <div class="about-badge">Ar. Muhammed Shafeeque M</div>
+  </div>
+  <div class="about-text reveal d2">
+    <div class="s-eyebrow">About the Studio</div>
+    <h2 class="s-title">Where<br>Innovation<br>Takes <em>Flight</em></h2>
+    <blockquote class="about-quote">
+      "I'm an architect with immense passion to learn, adapt and grow. As a designer, my aim is to bring life and soul to each and every design."
+    </blockquote>
+    <p class="about-body">
+      Spaceling Designs is more than a name — it is a commitment to crafting spaces that transcend boundaries, embracing the infinite possibilities of architecture. Founded in Kerala with a vision to redefine the built environment, we serve clients across residential, commercial, hospitality, and event verticals.
+    </p>
+    <div class="svc-list">
+      <div class="svc-item">Architecture</div>
+      <div class="svc-item">Interior Design</div>
+      <div class="svc-item">Landscape Design</div>
+      <div class="svc-item">Event Space Design</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="proj-header reveal">
+    <div>
+      <div class="s-eyebrow">Selected Works</div>
+      <h2 class="s-title">Our <em>Portfolio</em></h2>
+    </div>
+    <div class="filter-row">
+      <button class="f-btn on" onclick="filter('all',this)">All</button>
+      <button class="f-btn" onclick="filter('residential',this)">Residential</button>
+      <button class="f-btn" onclick="filter('commercial',this)">Commercial</button>
+      <button class="f-btn" onclick="filter('interior',this)">Interior</button>
+    </div>
+  </div>
+  <div class="proj-grid reveal">
+    <div class="pc" data-cat="commercial" onclick="openModal(0)">
+      <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200&auto=format&fit=crop&q=80" alt="ZORO Groom">
+      <div class="pc-overlay"><div class="pc-cat">Commercial · Grooming</div><div class="pc-name">ZORO Groom</div><div class="pc-loc">Kozhikode, Kerala</div><button class="pc-cta">View Project ↗</button></div>
+    </div>
+    <div class="pc" data-cat="interior" onclick="openModal(1)">
+      <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=900&auto=format&fit=crop&q=80" alt="Aure Salon">
+      <div class="pc-overlay"><div class="pc-cat">Interior · Salon</div><div class="pc-name">Aure Salon</div><div class="pc-loc">Calicut, Kerala</div><button class="pc-cta">View Project ↗</button></div>
+    </div>
+    <div class="pc" data-cat="commercial" onclick="openModal(2)">
+      <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&auto=format&fit=crop&q=80" alt="CreaSuite Office">
+      <div class="pc-overlay"><div class="pc-cat">Commercial · Office</div><div class="pc-name">CreaSuite</div><div class="pc-loc">Thrissur, Kerala</div><button class="pc-cta">View Project ↗</button></div>
+    </div>
+    <div class="pc" data-cat="residential" onclick="openModal(3)">
+      <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=900&auto=format&fit=crop&q=80" alt="Summit Residence">
+      <div class="pc-overlay"><div class="pc-cat">Residential · Architecture</div><div class="pc-name">Summit Residence</div><div class="pc-loc">Vytra, Kerala</div><button class="pc-cta">View Project ↗</button></div>
+    </div>
+    <div class="pc" data-cat="residential" onclick="openModal(4)">
+      <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=900&auto=format&fit=crop&q=80" alt="Joji Residence">
+      <div class="pc-overlay"><div class="pc-cat">Residential · Architecture</div><div class="pc-name">Joji Residence</div><div class="pc-loc">Kootthattukulam, Kerala</div><button class="pc-cta">View Project ↗</button></div>
+    </div>
+    <div class="pc" data-cat="residential" onclick="openModal(5)">
+      <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&auto=format&fit=crop&q=80" alt="Mohammed Residence">
+      <div class="pc-overlay"><div class="pc-cat">Residential · Architecture</div><div class="pc-name">Mohammed Residence</div><div class="pc-loc">Kasargode, Kerala</div><button class="pc-cta">View Project ↗</button></div>
+    </div>
+    <div class="pc" data-cat="interior" onclick="openModal(6)">
+      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&auto=format&fit=crop&q=80" alt="Private Villa Interior">
+      <div class="pc-overlay"><div class="pc-cat">Interior · Residential</div><div class="pc-name">Private Villa Interior</div><div class="pc-loc">Kerala</div><button class="pc-cta">View Project ↗</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" onclick="closeModal(null)"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    <div class="modal-hero"><img id="mImg" src="" alt=""><div class="modal-hero-label"><div class="modal-hero-cat" id="mCat"></div><div class="modal-hero-name" id="mName"></div><div class="modal-hero-loc" id="mLoc"></div></div></div>
+    <div class="modal-content">
+      <div class="modal-meta">
+        <div class="modal-meta-cell"><div class="mm-lbl">Year</div><div class="mm-val" id="mYear"></div></div>
+        <div class="modal-meta-cell"><div class="mm-lbl">Area</div><div class="mm-val" id="mArea"></div></div>
+        <div class="modal-meta-cell"><div class="mm-lbl">Status</div><div class="mm-val" id="mStatus"></div></div>
+      </div>
+      <div class="modal-quote" id="mDesc"></div>
+      <div class="modal-body" id="mBody"></div>
+      <div class="modal-imgs" id="mImgs"></div>
+      <div class="modal-specs"><div class="modal-specs-title">Project Details</div><div id="mSpecs"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="reveal" style="max-width:600px">
+    <div class="s-eyebrow">Methodology</div>
+    <h2 class="s-title">Our Design <em>Process</em></h2>
+  </div>
+  <div class="process-grid">
+    <div class="p-step reveal"><div class="p-accent-line"></div><div class="p-num">01</div><div class="p-ttl">Discovery</div><div class="p-body">Site visits, client conversations, and deep listening. We understand your vision, lifestyle, and aspirations before a single line is drawn.</div></div>
+    <div class="p-step reveal d1"><div class="p-accent-line"></div><div class="p-num">02</div><div class="p-ttl">Concept</div><div class="p-body">Raw ideas evolve into spatial narratives. We explore multiple design directions, balancing bold ambition with practical restraint.</div></div>
+    <div class="p-step reveal d2"><div class="p-accent-line"></div><div class="p-num">03</div><div class="p-ttl">Design</div><div class="p-body">Detailed drawings, 3D visualisations, and material schedules — every element considered with precision and purpose.</div></div>
+    <div class="p-step reveal d3"><div class="p-accent-line"></div><div class="p-num">04</div><div class="p-ttl">Execution</div><div class="p-body">On-site supervision, contractor coordination, and quality control ensure every detail is realised exactly as intended.</div></div>
+    <div class="p-step reveal d4"><div class="p-accent-line"></div><div class="p-num">05</div><div class="p-ttl">Handover</div><div class="p-body">A curated handover walkthrough, complete documentation, and post-occupancy support for lasting satisfaction.</div></div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section id="tools">
+  <div class="tools-intro reveal">
+    <div class="s-eyebrow">Exclusive Tools</div>
+    <h2 class="s-title">Design at Your <em>Fingertips</em></h2>
+    <p style="margin-top:18px;font-size:.84rem;line-height:1.9;color:var(--mid);font-weight:300">A suite of interactive planning instruments — designed to help you visualise, budget, and plan your project before ground breaks.</p>
+  </div>
+  <div class="tools-grid">
+
+    <!-- Budget Estimator -->
+    <div class="t-card reveal">
+      <div class="t-badge">Interactive</div>
+      <div class="t-name">Budget Estimator</div>
+      <div class="t-desc">Adjust floor area and finish grade to get a detailed, real-time cost breakdown across all project categories.</div>
+      <div class="t-demo">
+        <div class="demo-lbl">Floor Area: <span id="bAreaLbl">2,000 sq ft</span></div>
+        <input type="range" min="500" max="15000" step="100" value="2000" oninput="calcBudget()" id="bSlider">
+        <div class="budget-quality">
+          <div class="bq on" onclick="setBQ('standard',this)">Standard</div>
+          <div class="bq" onclick="setBQ('premium',this)">Premium</div>
+          <div class="bq" onclick="setBQ('luxury',this)">Luxury</div>
+        </div>
+        <div style="margin-top:14px">
+          <div class="budget-num" id="bOut">₹ 32.0 Lakhs</div>
+          <div class="budget-area" id="bRate">₹ 1,600 / sq ft · Standard Finish</div>
+        </div>
+        <div style="margin-top:12px">
+          <div class="b-row"><span>Civil & Structure (50%)</span><span id="bCiv">₹ 16.0L</span></div>
+          <div class="b-bar-wrap"><div class="b-bar-fill" id="bCivB" style="width:50%"></div></div>
+          <div class="b-row" style="margin-top:6px"><span>Interior & Finishing (30%)</span><span id="bInt">₹ 9.6L</span></div>
+          <div class="b-bar-wrap"><div class="b-bar-fill" id="bIntB" style="width:30%"></div></div>
+          <div class="b-row" style="margin-top:6px"><span>MEP — Electrical / Plumbing (15%)</span><span id="bMep">₹ 4.8L</span></div>
+          <div class="b-bar-wrap"><div class="b-bar-fill" id="bMepB" style="width:15%"></div></div>
+          <div class="b-row" style="margin-top:6px"><span>Landscaping & Periphery (5%)</span><span id="bLan">₹ 1.6L</span></div>
+          <div class="b-bar-wrap"><div class="b-bar-fill" id="bLanB" style="width:5%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Style Finder -->
+    <div class="t-card reveal d1">
+      <div class="t-badge">AI-Assisted</div>
+      <div class="t-name">Style Finder</div>
+      <div class="t-desc">Select design sensibilities to discover your architectural language, colour palette, and material direction.</div>
+      <div class="t-demo">
+        <div class="demo-lbl">Your design sensibility</div>
+        <div class="chip-row">
+          <div class="chip" onclick="pickStyle(this,'modern')">Modern</div>
+          <div class="chip" onclick="pickStyle(this,'classic')">Classical</div>
+          <div class="chip" onclick="pickStyle(this,'vernacular')">Vernacular</div>
+          <div class="chip" onclick="pickStyle(this,'minimal')">Minimal</div>
+          <div class="chip" onclick="pickStyle(this,'biophilic')">Biophilic</div>
+          <div class="chip" onclick="pickStyle(this,'industrial')">Industrial</div>
+        </div>
+        <div class="chip-result" id="styleOut"><span style="color:var(--mid);font-size:.74rem">Select a sensibility to reveal your design profile.</span></div>
+        <div style="display:flex;gap:7px;margin-top:10px" id="swatchRow"></div>
+        <div style="margin-top:10px;font-size:.7rem;color:var(--mid)" id="matOut"></div>
+      </div>
+    </div>
+
+    <!-- Timeline Planner -->
+    <div class="t-card reveal d2">
+      <div class="t-badge">Smart Planning</div>
+      <div class="t-name">Timeline Planner</div>
+      <div class="t-desc">Get a phase-by-phase project schedule with realistic durations based on your project type and complexity.</div>
+      <div class="t-demo">
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <select class="t-sel" style="flex:1" onchange="setTimeline()" id="tlType">
+            <option value="villa">Villa / Residence</option>
+            <option value="interior">Interior Fit-Out</option>
+            <option value="commercial">Commercial Space</option>
+            <option value="landscape">Landscape Design</option>
+          </select>
+          <select class="t-sel" style="flex:0 0 auto;width:110px" onchange="setTimeline()" id="tlScale">
+            <option value="small">Small</option>
+            <option value="medium" selected>Medium</option>
+            <option value="large">Large</option>
+          </select>
+        </div>
+        <div id="tlOut"></div>
+      </div>
+    </div>
+
+    <!-- AI Palette -->
+    <div class="t-card reveal">
+      <div class="t-badge">AI-Powered</div>
+      <div class="t-name">AI Palette Generator</div>
+      <div class="t-desc">Describe your ideal space atmosphere and receive an intelligent colour palette with material recommendations.</div>
+      <div class="t-demo">
+        <div class="demo-lbl">Describe your space</div>
+        <input type="text" class="t-inp" id="moodIn" placeholder="e.g. warm earthy Scandinavian kitchen...">
+        <button class="t-action" style="margin-top:0" onclick="genMoodAI()">Generate Palette</button>
+        <div class="ai-loading" id="aiLoad" style="margin-top:12px"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><span>Generating...</span></div>
+        <div class="mood-row" id="moodOut" style="margin-top:12px"></div>
+        <div class="ai-out" id="moodAiText"></div>
+      </div>
+    </div>
+
+    <!-- Quick Enquiry -->
+    <div class="t-card reveal d1">
+      <div class="t-badge">Get a Quote</div>
+      <div class="t-name">Quick Enquiry</div>
+      <div class="t-desc">Share your basic requirements and receive a tailored proposal within 24 hours.</div>
+      <div style="margin-top:20px">
+        <input type="text" class="t-inp" id="eqName" placeholder="Your Name">
+        <input type="text" class="t-inp" id="eqPhone" placeholder="Phone / WhatsApp">
+        <select class="t-sel" id="eqType">
+          <option value="">Select Project Type</option>
+          <option>Residential Architecture</option>
+          <option>Interior Design</option>
+          <option>Commercial Space</option>
+          <option>Landscape Design</option>
+          <option>Event Space</option>
+        </select>
+        <input type="text" class="t-inp" id="eqArea" placeholder="Approx. Area (sq ft) — optional">
+      </div>
+      <button class="t-action" id="eqBtn" onclick="quickEnq()">Submit Enquiry</button>
+      <div class="form-success" id="eqSuccess">Your enquiry has been received. We will contact you within 24 hours.</div>
+    </div>
+
+    <!-- Why Spaceling -->
+    <div class="t-card reveal d2" style="border-top: 2px solid var(--accent)">
+      <div class="t-badge">Studio</div>
+      <div class="t-name">Why Spaceling</div>
+      <div style="margin-top:20px">
+        <div class="why-item"><div class="why-num">01</div><div class="why-text">Personalised design process — no template projects, every commission is original.</div></div>
+        <div class="why-item"><div class="why-num">02</div><div class="why-text">Vernacular sensitivity balanced with contemporary craft and modern materials.</div></div>
+        <div class="why-item"><div class="why-num">03</div><div class="why-text">Transparent client portal for complete project visibility at every stage.</div></div>
+        <div class="why-item"><div class="why-num">04</div><div class="why-text">End-to-end services: concept design through construction supervision.</div></div>
+        <div class="why-item"><div class="why-num">05</div><div class="why-text">Kerala roots, with national and international project experience.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testi">
+  <div class="reveal"><div class="s-eyebrow">Client Voices</div><h2 class="s-title">What They <em>Say</em></h2></div>
+  <div class="testi-grid">
+    <div class="t-card-item reveal">
+      <div class="t-open">&ldquo;</div>
+      <p class="t-text">Working with Spaceling Designs completely transformed our salon. The vision Shafeeque brought — golden halos, fluid curves, a sense of layered luxury — was beyond anything we imagined. Our clients feel elevated the moment they walk in.</p>
+      <div class="t-author"><div class="t-av">A</div><div><div class="t-name">Aure Salon Management</div><div class="t-role">Commercial Client · Calicut</div><div class="t-stars">★★★★★</div></div></div>
+    </div>
+    <div class="t-card-item reveal d1">
+      <div class="t-open">&ldquo;</div>
+      <p class="t-text">Our residence became a true sanctuary. The way Spaceling captured the dialogue between inside and outside, the sensitivity to natural light — every corner tells a story we didn't know we needed to tell.</p>
+      <div class="t-author"><div class="t-av">J</div><div><div class="t-name">Joji Family</div><div class="t-role">Residential Client · Kootthattukulam</div><div class="t-stars">★★★★★</div></div></div>
+    </div>
+    <div class="t-card-item reveal d2">
+      <div class="t-open">&ldquo;</div>
+      <p class="t-text">The CreaSuite office design went beyond aesthetics — it changed how our team works and collaborates. Creativity flows effortlessly in that space.</p>
+      <div class="t-author"><div class="t-av">C</div><div><div class="t-name">CreaSuite Team</div><div class="t-role">Commercial Client · Thrissur</div><div class="t-stars">★★★★★</div></div></div>
+    </div>
+    <div class="t-card-item reveal d3">
+      <div class="t-open">&ldquo;</div>
+      <p class="t-text">From first sketch to handover, the process was transparent and collaborative. A truly world-class experience from an architect who genuinely cares about your home.</p>
+      <div class="t-author"><div class="t-av">M</div><div><div class="t-name">Mohammed Family</div><div class="t-role">Residential Client · Kasargode</div><div class="t-stars">★★★★★</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal"><div class="s-eyebrow">Get in Touch</div><h2 class="s-title">Start Your <em>Project</em></h2></div>
+  <div class="contact-grid">
+    <div class="reveal">
+      <p style="font-size:.86rem;line-height:1.95;color:var(--mid);margin-bottom:44px;font-weight:300">Every extraordinary space begins with a conversation. Share your vision with us and we will help shape it with precision, artistry, and purpose.</p>
+      <div class="c-item"><div class="c-icn"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg></div><div><div class="c-lbl">WhatsApp / Call</div><div class="c-val">+91 81570 56351</div></div></div>
+      <div class="c-item"><div class="c-icn"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div><div><div class="c-lbl">Instagram</div><div class="c-val">@space.ling_</div></div></div>
+      <div class="c-item"><div class="c-icn"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="c-lbl">Service Areas</div><div class="c-val">Kerala · Pan India · International</div></div></div>
+      <div class="c-item"><div class="c-icn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="c-lbl">Studio Hours</div><div class="c-val">Monday – Saturday · 9 AM – 7 PM</div></div></div>
+    </div>
+    <div class="reveal d2">
+      <div class="form-row">
+        <div class="c-fg"><label class="c-fl">Full Name</label><input class="c-fi" id="cName" type="text" placeholder="Your name"></div>
+        <div class="c-fg"><label class="c-fl">Phone</label><input class="c-fi" id="cPhone" type="text" placeholder="+91 XXXXX XXXXX"></div>
+      </div>
+      <div class="c-fg"><label class="c-fl">Email</label><input class="c-fi" id="cEmail" type="email" placeholder="you@email.com"></div>
+      <div class="c-fg" style="margin-top:12px"><label class="c-fl">Project Type</label>
+        <select class="c-fi" id="cType">
+          <option>Residential Architecture</option>
+          <option>Interior Design</option>
+          <option>Commercial Space</option>
+          <option>Landscape Design</option>
+          <option>Event Space Design</option>
+        </select>
+      </div>
+      <div class="c-fg" style="margin-top:12px"><label class="c-fl">Project Brief</label>
+        <textarea class="c-fi" id="cBrief" placeholder="Share your vision, site details, timeline, budget range..."></textarea>
+      </div>
+      <button class="t-action" style="margin-top:8px" id="cBtn" onclick="sendContact()">Send Message →</button>
+      <div class="contact-success" id="cSuccess">Thank you. Your message has been received. We will respond within 24 hours.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">Spaceling Designs</div>
+  <div class="f-links">
+    <a href="#about">Studio</a>
+    <a href="#projects">Projects</a>
+    <a href="#process">Process</a>
+    <a href="#tools">Tools</a>
+    <a href="#contact">Contact</a>
+    <a href="client-portal.html" class="portal-link-btn">Client Portal →</a>
+  </div>
+  <div class="f-copy">© 2025 Spaceling Designs · Ar. Muhammed Shafeeque M · Architecture · Interior · Landscape · Event Space · +91 81570 56351</div>
+</footer>
+
+<script>
+// LOADER
+window.addEventListener('load', () => {
+  const l = document.getElementById('loader');
+  setTimeout(() => { l.style.opacity = '0'; l.style.visibility = 'hidden'; }, 2200);
+});
+
+// CURSOR
+const cur = document.getElementById('cur'), ring = document.getElementById('cur-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px'; });
+(function loop() { rx += (mx - rx) * .1; ry += (my - ry) * .1; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); })();
+document.querySelectorAll('a,button,[onclick],input,select,textarea,.pc,.chip,.svc-item').forEach(el => {
+  el.addEventListener('mouseenter', () => { cur.style.width = '12px'; cur.style.height = '12px'; ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(26,25,22,.6)'; });
+  el.addEventListener('mouseleave', () => { cur.style.width = '6px'; cur.style.height = '6px'; ring.style.width = '30px'; ring.style.height = '30px'; ring.style.borderColor = 'rgba(26,25,22,.35)'; });
+});
+
+// NAV
+window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('stuck', scrollY > 60));
+
+// REVEAL
+const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .08 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// MOBILE NAV
+function toggleNav() {
+  const n = document.getElementById('navLinks');
+  const open = n.style.display === 'flex';
+  if (open) { n.style.display = ''; }
+  else { n.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:52px;left:0;right:0;background:rgba(250,250,248,.98);padding:28px 40px;gap:20px;z-index:700;border-bottom:1px solid var(--rule);'; }
+}
+
+// FILTER
+function filter(cat, btn) {
+  document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.pc').forEach(c => {
+    const match = cat === 'all' || c.dataset.cat === cat;
+    c.style.opacity = match ? '1' : '0.18';
+    c.style.pointerEvents = match ? '' : 'none';
+  });
+}
+
+// PROJECT DATA
+const projects = [
+  { cat:'Commercial · Grooming', name:'ZORO Groom', loc:'Kozhikode, Kerala', year:'2023', area:'1,800 sq ft', status:'Completed', img:'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1400&auto=format&fit=crop&q=80', imgs:['https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&auto=format&fit=crop&q=75','https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=800&auto=format&fit=crop&q=75'], desc:'A modern sanctuary of luxury and grace for the contemporary gentleman.', body:'ZORO Groom redefines the grooming experience through architecture. Soft curves meet botanical motifs, while a palette of deep forest greens, matte blacks, and brushed brass creates an environment that feels both energising and exclusive. Every detail — from the bespoke barber stations to the concealed lighting beneath mirror soffits — was designed to elevate ritual into ceremony.', specs:[['Client Type','Commercial — Grooming Studio'],['Design Style','Contemporary Luxury'],['Key Materials','Micro-cement, Fluted Glass, Brass Fixtures'],['Lighting Design','Concealed LED Cove + Pendant Halos'],['Completion','December 2023']] },
+  { cat:'Interior · Salon', name:'Aure Salon', loc:'Calicut, Kerala', year:'2023', area:'2,200 sq ft', status:'Completed', img:'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=1400&auto=format&fit=crop&q=80', imgs:['https://images.unsplash.com/photo-1562322140-8baeececf3df?w=800&auto=format&fit=crop&q=75','https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=800&auto=format&fit=crop&q=75'], desc:'A symphony of light, gold, and reflection — redefining luxury through fluid curves and timeless elegance.', body:'Aure Salon began with a singular vision: a space where beauty is experienced as architecture. Golden halo lighting rings float above each station, casting a warm theatrical glow across Calacatta marble surfaces and fluted bronze-tinted mirrors.', specs:[['Client Type','Commercial — Luxury Salon'],['Design Style','Contemporary Glamour'],['Key Materials','Calacatta Marble, Fluted Bronze Glass, Terrazzo'],['Lighting Design','Circular Halo Pendants, Backlit Mirrors'],['Completion','October 2023']] },
+  { cat:'Commercial · Office', name:'CreaSuite', loc:'Thrissur, Kerala', year:'2024', area:'3,400 sq ft', status:'Completed', img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&auto=format&fit=crop&q=80', imgs:['https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=800&auto=format&fit=crop&q=75','https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&auto=format&fit=crop&q=75'], desc:'Sleek navy tones, dynamic lighting, and flexible work zones that inspire creativity and productivity.', body:'CreaSuite was conceived as a living, adaptable organism of work. Deep navy volumes define collaborative hubs, while translucent partition screens allow light to permeate without sacrificing acoustic privacy.', specs:[['Client Type','Commercial — Creative Agency'],['Design Style','Modernist / Adaptable'],['Key Materials','Navy Lacquered MDF, Frosted Glass, Polished Concrete'],['Completion','March 2024']] },
+  { cat:'Residential · Architecture', name:'Summit Residence', loc:'Vytra, Kerala', year:'2023', area:'4,200 sq ft', status:'Completed', img:'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1400&auto=format&fit=crop&q=80', imgs:['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&auto=format&fit=crop&q=75','https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&auto=format&fit=crop&q=75'], desc:'A modern sanctuary where light, air, and material harmony blur the boundaries between inside and outside.', body:'Situated on a gentle hillside in Vytra, Summit Residence responds to its topography with a series of interlocking volumes that step down the slope. Full-height glazed walls on the western face frame a layered landscape view.', specs:[['Project Type','Residential — Family Villa'],['Design Style','Modern Vernacular'],['Key Materials','Fair-face Concrete, Teak Wood, Laterite Stone'],['Completion','September 2023']] },
+  { cat:'Residential · Architecture', name:'Joji Residence', loc:'Kootthattukulam, Kerala', year:'2024', area:'3,600 sq ft', status:'Completed', img:'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1400&auto=format&fit=crop&q=80', imgs:['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&auto=format&fit=crop&q=75','https://images.unsplash.com/photo-1600210491892-03d54079b6ac?w=800&auto=format&fit=crop&q=75'], desc:'Rooted in vernacular charm yet shaped by modern grace — celebrating the dialogue between earth and sky.', body:'The Joji Residence draws deeply from the architectural memory of traditional homesteads — the nalukettu\'s inward courtyard logic translated into a contemporary double-height atrium that floods the heart of the house with filtered daylight.', specs:[['Project Type','Residential — Family Residence'],['Design Style','Contemporary Vernacular'],['Key Materials','Clay Roof Tiles, Granite, White Plaster, Teak'],['Special Feature','Central Sky-lit Atrium'],['Completion','January 2024']] },
+  { cat:'Residential · Architecture', name:'Mohammed Residence', loc:'Kasargode, Kerala', year:'2024', area:'5,100 sq ft', status:'Completed', img:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1400&auto=format&fit=crop&q=80', imgs:['https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&auto=format&fit=crop&q=75','https://images.unsplash.com/photo-1600607686527-6fb886090705?w=800&auto=format&fit=crop&q=75'], desc:'Designed to embrace both tradition and modernity — a residence that celebrates the beauty of balance.', body:'The Mohammed Residence in Kasargode is the largest residential commission to date for Spaceling Designs. The result is a residence of confident symmetry — a bold double-height entrance portico flanked by generous wing volumes.', specs:[['Project Type','Residential — Large Family Villa'],['Design Style','Modern with Traditional Accents'],['Key Materials','Pressed Brick, Kota Stone, White Marble, Timber Screens'],['Completion','April 2024']] },
+  { cat:'Interior · Residential', name:'Private Villa Interior', loc:'Kerala', year:'2024', area:'2,800 sq ft', status:'Completed', img:'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1400&auto=format&fit=crop&q=80', imgs:['https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=800&auto=format&fit=crop&q=75','https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=800&auto=format&fit=crop&q=75'], desc:'Warmth and simplicity through layered textures, golden accents, and fluid forms — where everyday living becomes art.', body:'This private residential interior commission prioritised warmth without excess. A curated palette of warm whites, natural linens, handwoven rugs, and aged oak joinery forms the foundation upon which artisan lighting and bespoke furniture create character and depth.', specs:[['Project Type','Residential — Interior Design'],['Design Style','Warm Minimalist'],['Key Materials','Aged Oak, Linen, Handwoven Rugs, Plaster Walls'],['Scope','Full Interior — All Rooms + Joinery'],['Completion','June 2024']] }
+];
+
+function openModal(i) {
+  const p = projects[i];
+  document.getElementById('mImg').src = p.img;
+  document.getElementById('mCat').textContent = p.cat;
+  document.getElementById('mName').textContent = p.name;
+  document.getElementById('mLoc').textContent = p.loc;
+  document.getElementById('mYear').textContent = p.year;
+  document.getElementById('mArea').textContent = p.area;
+  document.getElementById('mStatus').textContent = p.status;
+  document.getElementById('mDesc').textContent = p.desc;
+  document.getElementById('mBody').textContent = p.body;
+  document.getElementById('mImgs').innerHTML = p.imgs.map(s => `<div class="mi"><img src="${s}" loading="lazy"></div>`).join('');
+  document.getElementById('mSpecs').innerHTML = p.specs.map(s => `<div class="spec-row"><span>${s[0]}</span><span>${s[1]}</span></div>`).join('');
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('modalBox').scrollTop = 0;
+}
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modalOverlay')) return;
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(null); });
+
+// BUDGET
+let bqRate = 1600;
+function setBQ(q, el) {
+  document.querySelectorAll('.bq').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  const rates = { standard: 1600, premium: 2400, luxury: 3800 };
+  const labels = { standard: 'Standard Finish', premium: 'Premium Finish', luxury: 'Luxury Finish' };
+  bqRate = rates[q];
+  document.getElementById('bRate').textContent = '₹ ' + bqRate.toLocaleString('en-IN') + ' / sq ft · ' + labels[q];
+  calcBudget();
+}
+function calcBudget() {
+  const area = parseInt(document.getElementById('bSlider').value);
+  document.getElementById('bAreaLbl').textContent = area.toLocaleString('en-IN') + ' sq ft';
+  const t = area * bqRate;
+  const lk = v => (v / 100000).toFixed(1) + 'L';
+  document.getElementById('bOut').textContent = '₹ ' + (t / 100000).toFixed(1) + ' Lakhs';
+  document.getElementById('bCiv').textContent = '₹ ' + lk(t * .5);
+  document.getElementById('bInt').textContent = '₹ ' + lk(t * .3);
+  document.getElementById('bMep').textContent = '₹ ' + lk(t * .15);
+  document.getElementById('bLan').textContent = '₹ ' + lk(t * .05);
+}
+
+// STYLE FINDER
+const styles = {
+  modern: { t: 'Modern Minimalist — Clean lines, purposeful space, and material honesty define your architectural language. Flat roofs, open-plan living, and precision detailing characterise your ideal home.', p: ['#1A1A18','#E8E8E8','#C8A86B','#6A6460'], m: 'Materials: Micro-cement · Structural Glass · Powder-coated Steel · White Oak' },
+  classic: { t: 'Classical Elegance — Symmetry, proportion, and enduring craftsmanship form the foundation of your aesthetic. Mouldings, columns, and rich material hierarchies express permanence and authority.', p: ['#F0EDE4','#8B6914','#2C2416','#C8B89A'], m: 'Materials: Italian Marble · Brass · Dark Walnut · Woven Silk' },
+  vernacular: { t: 'Vernacular Contemporary — Place, climate, and cultural memory shape your architecture from within. Your home speaks the language of its land while embracing the freedoms of modern design.', p: ['#8B5E3C','#D4A76A','#2D4A22','#F0E8DC'], m: 'Materials: Laterite · Country Teak · Clay Tile · Lime Plaster' },
+  minimal: { t: 'Wabi-Sabi Minimal — Beauty in imperfection, silence in space, and texture as the primary material. Your architecture breathes — a deliberate restraint that amplifies what remains.', p: ['#E8E4DC','#A89880','#6B6258','#2C2420'], m: 'Materials: Raw Concrete · Aged Timber · Linen · Natural Stone' },
+  biophilic: { t: 'Biophilic Design — Nature as co-designer. Living walls, daylighting strategies, water features, and organic forms create an architecture that heals and restores the human spirit.', p: ['#3D5A3E','#8FAF78','#D4C4A8','#1C2E1D'], m: 'Materials: Bamboo · Rammed Earth · Moss Panels · River Stone' },
+  industrial: { t: 'Industrial Raw — Exposed structure, honest materiality, and powerful spatial sequences. Your architecture declares its bones with confidence, celebrating the beauty of process and construction.', p: ['#2A2A2A','#8C7B6A','#D4AA70','#F0EDEA'], m: 'Materials: Exposed Concrete · Weathered Steel · Reclaimed Brick · Black Iron' }
+};
+function pickStyle(el, s) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  const d = styles[s];
+  document.getElementById('styleOut').textContent = d.t;
+  document.getElementById('swatchRow').innerHTML = d.p.map(c => `<div class="swatch" style="background:${c}" title="${c}"></div>`).join('');
+  document.getElementById('matOut').textContent = d.m;
+}
+
+// TIMELINE
+const timelines = {
+  villa: { small:[{n:'Design & Concept',d:'3 – 4 weeks'},{n:'Working Drawings',d:'2 – 3 weeks'},{n:'Construction',d:'6 – 8 months'},{n:'Handover & Styling',d:'2 weeks'}], medium:[{n:'Design & Concept',d:'4 – 6 weeks'},{n:'Working Drawings',d:'3 – 4 weeks'},{n:'Construction',d:'8 – 12 months'},{n:'Handover & Styling',d:'2 – 3 weeks'}], large:[{n:'Design & Concept',d:'6 – 9 weeks'},{n:'Working Drawings',d:'4 – 6 weeks'},{n:'Construction',d:'12 – 18 months'},{n:'Handover & Styling',d:'3 – 4 weeks'}] },
+  interior: { small:[{n:'Concept Design',d:'1 – 2 weeks'},{n:'Detailed Drawings',d:'1 week'},{n:'Execution',d:'4 – 6 weeks'},{n:'Styling & Handover',d:'3 – 5 days'}], medium:[{n:'Concept Design',d:'2 – 3 weeks'},{n:'Detailed Drawings',d:'1 – 2 weeks'},{n:'Execution',d:'6 – 10 weeks'},{n:'Styling & Handover',d:'1 week'}], large:[{n:'Concept Design',d:'3 – 5 weeks'},{n:'Detailed Drawings',d:'2 – 3 weeks'},{n:'Execution',d:'3 – 5 months'},{n:'Styling & Handover',d:'1 – 2 weeks'}] },
+  commercial: { small:[{n:'Brief & Concept',d:'2 – 3 weeks'},{n:'Design Development',d:'2 – 3 weeks'},{n:'Fit-Out Works',d:'2 – 3 months'},{n:'Commissioning',d:'1 week'}], medium:[{n:'Brief & Concept',d:'3 – 4 weeks'},{n:'Design Development',d:'3 – 4 weeks'},{n:'Fit-Out Works',d:'3 – 5 months'},{n:'Commissioning',d:'1 – 2 weeks'}], large:[{n:'Brief & Concept',d:'4 – 6 weeks'},{n:'Design Development',d:'5 – 7 weeks'},{n:'Fit-Out Works',d:'5 – 9 months'},{n:'Commissioning',d:'2 – 3 weeks'}] },
+  landscape: { small:[{n:'Survey & Concept',d:'1 – 2 weeks'},{n:'Planting Plan',d:'1 week'},{n:'Earthworks & Planting',d:'3 – 5 weeks'},{n:'Maintenance Plan',d:'3 – 5 days'}], medium:[{n:'Survey & Concept',d:'2 – 3 weeks'},{n:'Planting Plan',d:'1 – 2 weeks'},{n:'Earthworks & Planting',d:'4 – 8 weeks'},{n:'Maintenance Plan',d:'1 week'}], large:[{n:'Survey & Concept',d:'3 – 5 weeks'},{n:'Planting Plan',d:'2 – 3 weeks'},{n:'Earthworks & Planting',d:'2 – 4 months'},{n:'Maintenance Plan',d:'1 – 2 weeks'}] }
+};
+function setTimeline() {
+  const type = document.getElementById('tlType').value;
+  const scale = document.getElementById('tlScale').value;
+  const phases = timelines[type][scale];
+  const totals = { villa:{small:'7–10 months',medium:'11–14 months',large:'15–22 months'}, interior:{small:'6–10 weeks',medium:'9–16 weeks',large:'4–7 months'}, commercial:{small:'3–4 months',medium:'4–7 months',large:'7–12 months'}, landscape:{small:'5–9 weeks',medium:'8–14 weeks',large:'3–5 months'} };
+  document.getElementById('tlOut').innerHTML = phases.map(p => `<div class="tl-phase"><div class="tl-dot-sm"></div><div><div class="tl-phase-name">${p.n}</div><div class="tl-phase-dur">${p.d}</div></div></div>`).join('') + `<div class="tl-total"><span>Total Duration (est.)</span><span>${totals[type][scale]}</span></div>`;
+}
+setTimeline();
+
+// AI PALETTE
+async function genMoodAI() {
+  const val = document.getElementById('moodIn').value.trim();
+  if (!val) return;
+  const load = document.getElementById('aiLoad'), out = document.getElementById('moodOut'), txt = document.getElementById('moodAiText');
+  load.classList.add('show'); out.innerHTML = ''; txt.textContent = '';
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: `You are an expert interior designer and colour theorist. Based on the following space description, generate a curated architectural colour palette with exactly 5 hex colour codes and a short poetic description (2–3 sentences, no markdown). Space description: "${val}". Respond ONLY as valid JSON, no preamble, no backticks: {"colors":["#hex1","#hex2","#hex3","#hex4","#hex5"],"names":["name1","name2","name3","name4","name5"],"description":"2-3 sentence poetic description"}` }] }) });
+    const data = await res.json();
+    const raw = data.content.map(c => c.text || '').join('').replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(raw);
+    out.innerHTML = parsed.colors.map((c, i) => `<div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:38px;height:38px;background:${c}" title="${c}"></div><div style="font-size:.55rem;color:var(--mid);text-align:center;max-width:52px;line-height:1.3">${parsed.names[i]}</div></div>`).join('');
+    txt.textContent = parsed.description;
+  } catch(e) {
+    out.innerHTML = ['#C9956E','#E8C49B','#8B5E3C','#F0E8DC','#5C3D1E'].map(c => `<div style="width:38px;height:38px;background:${c}"></div>`).join('');
+    txt.textContent = 'A palette drawn from the essence of your description — earthy, considered, and lasting.';
+  }
+  load.classList.remove('show');
+}
+document.getElementById('moodIn').addEventListener('keydown', e => { if (e.key === 'Enter') genMoodAI(); });
+
+// QUICK ENQUIRY
+function quickEnq() {
+  const name = document.getElementById('eqName').value.trim();
+  const phone = document.getElementById('eqPhone').value.trim();
+  const type = document.getElementById('eqType').value;
+  if (!name || !phone || !type) { alert('Please fill in your name, phone number, and project type.'); return; }
+  document.getElementById('eqBtn').disabled = true;
+  document.getElementById('eqBtn').textContent = 'Submitted ✓';
+  document.getElementById('eqSuccess').style.display = 'block';
+}
+
+// CONTACT
+function sendContact() {
+  const name = document.getElementById('cName').value.trim();
+  const email = document.getElementById('cEmail').value.trim();
+  if (!name || !email) { alert('Please fill in your name and email address.'); return; }
+  document.getElementById('cBtn').disabled = true;
+  document.getElementById('cBtn').textContent = 'Message Sent ✓';
+  document.getElementById('cSuccess').style.display = 'block';
+}
+</script>
+</body>
+</html>
