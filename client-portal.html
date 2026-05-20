@@ -497,7 +497,7 @@ button { font-family: 'DM Sans', sans-serif; cursor: pointer; }
     if ("Notification" in window && Notification.permission === "granted") {
       new Notification(title, {
         body: bodyText,
-        icon: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=128&q=75" // Small portal image as icon
+        icon: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=128&q=75" 
       });
     }
   }
@@ -564,23 +564,36 @@ button { font-family: 'DM Sans', sans-serif; cursor: pointer; }
 
   // ── UI RENDERING ──
   function renderDashboard(data) {
-    document.querySelector('.dash-project-name').textContent = data.projectName;
-    document.querySelector('.dash-project-sub').innerHTML = `${data.location} &nbsp;·&nbsp; Ref: ${data.projectId}`;
-    document.querySelector('.dash-user-name').textContent = data.clientName;
-    document.querySelector('.dash-user-id').textContent = data.projectId;
-    document.querySelector('.dash-avatar').textContent = data.clientName.charAt(0).toUpperCase();
-
-    const poVals = document.querySelectorAll('.po-val');
-    const poSubs = document.querySelectorAll('.po-sub');
+    document.querySelector('.dash-project-name').textContent = data.projectName || 'Unnamed Project';
+    document.querySelector('.dash-project-sub').innerHTML = `${data.location || 'Unknown location'} &nbsp;·&nbsp; Ref: ${data.projectId || 'No ID'}`;
+    document.querySelector('.dash-user-name').textContent = data.clientName || 'Client';
+    document.querySelector('.dash-user-id').textContent = data.projectId || 'No ID';
     
-    poVals[0].textContent = data.progressPercent + '%';
-    poSubs[0].textContent = data.statusSubtext;
-    poVals[1].textContent = data.statusText;
-    poSubs[1].innerHTML = `<span class="po-dot"></span>Updated recently`;
-    poVals[2].textContent = data.estimatedCompletion;
-    poSubs[2].textContent = data.completionSubtext;
+    if (data.clientName) {
+      document.querySelector('.dash-avatar').textContent = data.clientName.charAt(0).toUpperCase();
+    }
 
-    document.querySelector('.prog-bar-label').innerHTML = `<span>Project Progress</span><span>${data.progressPercent}% Complete</span>`;
+    const cells = document.querySelectorAll('.po-cell');
+    
+    if (cells[0]) {
+      cells[0].querySelector('.po-val').textContent = (data.progressPercent || 0) + '%';
+      cells[0].querySelector('.po-sub').textContent = data.statusSubtext || '';
+    }
+    
+    if (cells[1]) {
+      cells[1].querySelector('.po-val').textContent = data.statusText || 'Updating...';
+      cells[1].querySelector('.po-status').innerHTML = `<span class="po-dot"></span>Updated recently`;
+    }
+    
+    if (cells[2]) {
+      cells[2].querySelector('.po-val').textContent = data.estimatedCompletion || 'TBD';
+      cells[2].querySelector('.po-sub').textContent = data.completionSubtext || '';
+    }
+
+    const barLabel = document.querySelector('.prog-bar-label');
+    if (barLabel) {
+      barLabel.innerHTML = `<span>Project Progress</span><span>${data.progressPercent || 0}% Complete</span>`;
+    }
   }
 
   // ── TABS ──
