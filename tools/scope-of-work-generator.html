@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scope of Work Generator — Spaceling Designs</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1c1917;
+  --mid: #57534e;
+  --pale: #a8a29e;
+  --bg: #faf9f7;
+  --sidebar-bg: #1c1917;
+  --accent: #b45309;
+  --accent2: #dc2626;
+  --border: #e7e5e4;
+  --highlight: #fef08a;
+  --white: #ffffff;
+  --card: #f5f4f1;
+  --gold: #b45309;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
+
+.app{display:grid;grid-template-columns:400px 1fr;min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  background:var(--sidebar-bg);color:#d6d3d1;
+  padding:28px 22px;overflow-y:auto;
+  position:sticky;top:0;height:100vh;
+}
+.s-logo{
+  display:flex;align-items:center;gap:10px;
+  padding-bottom:22px;margin-bottom:6px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.s-logo-mark{
+  width:38px;height:38px;border-radius:6px;
+  background:rgba(180,83,9,0.2);border:1px solid rgba(180,83,9,0.4);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--accent);font-weight:700;
+}
+.s-logo-text{font-family:'Cormorant Garamond',serif;font-size:16px;color:#d6d3d1;line-height:1.1;}
+.s-logo-sub{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#78716c;margin-top:3px;}
+
+/* tabs */
+.tab-nav{display:flex;gap:0;margin-bottom:0;flex-wrap:wrap;margin-top:16px;}
+.tab-btn{
+  flex:1;padding:8px 4px;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.06);border-bottom:none;
+  color:#78716c;font-size:10px;letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;font-family:'Jost',sans-serif;font-weight:500;
+  transition:all 0.2s;text-align:center;
+}
+.tab-btn:first-child{border-radius:6px 0 0 0;}
+.tab-btn:last-child{border-radius:0 6px 0 0;}
+.tab-btn.active{background:rgba(180,83,9,0.15);color:var(--accent);border-color:rgba(180,83,9,0.3);}
+.tab-btn:hover:not(.active){color:#a8a29e;}
+.tab-panel{
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);
+  border-radius:0 0 8px 8px;padding:18px;display:none;
+}
+.tab-panel.active{display:block;}
+
+/* form elements */
+.fg{margin-bottom:13px;}
+.fg label{display:block;font-size:10px;color:#78716c;margin-bottom:5px;letter-spacing:.5px;font-weight:500;}
+.fc{
+  width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  border-radius:6px;color:#d6d3d1;font-family:'Jost',sans-serif;font-size:13px;
+  padding:8px 11px;outline:none;transition:border-color .2s,background .2s;
+}
+.fc:focus{border-color:var(--accent);background:rgba(180,83,9,0.08);}
+.fc::placeholder{color:#57534e;}
+textarea.fc{resize:vertical;min-height:60px;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.slabel{
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);margin:16px 0 10px;font-weight:600;
+  display:flex;align-items:center;gap:6px;
+}
+.slabel::after{content:'';flex:1;height:1px;background:rgba(180,83,9,0.2);}
+
+/* drawing items */
+.drawing-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.drawing-item{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);
+  border-radius:6px;padding:8px 10px;
+}
+.drawing-item input[type=checkbox]{accent-color:var(--accent);width:14px;height:14px;flex-shrink:0;}
+.drawing-item-label{font-size:12px;color:#d6d3d1;flex:1;cursor:pointer;}
+.drawing-item input[type=text]{
+  background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.15);
+  color:#d6d3d1;font-size:12px;font-family:'Jost',sans-serif;outline:none;
+  flex:1;padding:2px 0;
+}
+.drawing-item input[type=text]:focus{border-bottom-color:var(--accent);}
+
+/* fee stages */
+.stage-row{
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+  border-radius:7px;padding:12px;margin-bottom:8px;position:relative;
+}
+.stage-row-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+.stage-num{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);}
+.rmv-btn{background:none;border:none;color:#57534e;cursor:pointer;font-size:15px;padding:2px 6px;border-radius:4px;}
+.rmv-btn:hover{color:#e05050;background:rgba(255,0,0,0.1);}
+
+/* buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:9px 16px;border-radius:6px;border:none;cursor:pointer;
+  font-family:'Jost',sans-serif;font-size:12px;font-weight:500;transition:all .2s;
+}
+.btn-accent{background:var(--accent);color:#fff;}
+.btn-accent:hover{background:#92400e;transform:translateY(-1px);}
+.btn-ghost{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#a8a29e;}
+.btn-ghost:hover{border-color:var(--accent);color:#d6d3d1;}
+.btn-sm{padding:6px 12px;font-size:11px;}
+.btn-block{width:100%;}
+.s-actions{display:flex;flex-direction:column;gap:8px;margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);}
+
+/* ── PREVIEW ── */
+.preview{background:#e8e3da;padding:36px 36px;overflow-y:auto;display:flex;flex-direction:column;align-items:center;}
+.prev-toolbar{width:100%;max-width:800px;display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
+.prev-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:#78716c;letter-spacing:1px;}
+.prev-actions{display:flex;gap:8px;}
+.pbtn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:6px;border:none;cursor:pointer;
+  font-family:'Jost',sans-serif;font-size:12px;font-weight:500;transition:all .2s;
+}
+.pbtn-dark{background:var(--ink);color:#fff;}
+.pbtn-dark:hover{background:#292524;}
+.pbtn-light{background:rgba(0,0,0,0.1);color:var(--ink);}
+.pbtn-light:hover{background:rgba(0,0,0,0.18);}
+
+/* ── DOCUMENT ── */
+.doc{
+  width:800px;background:var(--white);
+  box-shadow:0 8px 60px rgba(0,0,0,0.14);
+  font-family:'Jost',sans-serif;font-size:13.5px;
+  line-height:1.75;color:var(--ink);
+}
+
+/* doc header */
+.dh{
+  padding:28px 48px 18px;
+  border-bottom:2px solid var(--ink);
+  display:flex;justify-content:space-between;align-items:flex-start;
+}
+.dh-brand{display:flex;align-items:center;gap:14px;}
+.dh-logo{
+  width:56px;height:56px;border-radius:50%;background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--accent);font-weight:700;
+  overflow:hidden;flex-shrink:0;
+}
+.dh-logo img{width:100%;height:100%;object-fit:cover;}
+.dh-firm{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--ink);}
+.dh-tag{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-top:3px;}
+.dh-right{text-align:right;font-size:12px;color:var(--mid);line-height:1.8;}
+.dh-arch{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--ink);font-weight:600;}
+
+/* doc title block */
+.dt{
+  background:var(--ink);color:var(--white);
+  padding:14px 48px;text-align:center;
+}
+.dt-main{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;letter-spacing:3px;text-transform:uppercase;}
+.dt-sub{font-size:11px;letter-spacing:2px;color:#a8a29e;margin-top:4px;}
+
+/* doc body */
+.db{padding:32px 48px;}
+
+/* section */
+.ds{margin-bottom:28px;}
+.ds-num{
+  font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:5px;margin-bottom:14px;
+}
+.ds-sub{
+  font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--mid);margin:14px 0 8px;
+}
+.dp{margin-bottom:10px;text-align:justify;font-size:13px;color:var(--ink);line-height:1.8;}
+.dp-red{color:var(--accent2);font-size:13px;line-height:1.8;margin-bottom:8px;}
+.dp-italic{font-style:italic;font-size:12.5px;color:var(--mid);line-height:1.8;margin-bottom:8px;}
+.dp-highlight{background:var(--highlight);padding:2px 0;font-style:italic;font-size:12.5px;line-height:1.8;display:block;margin-bottom:6px;}
+
+/* drawing list in doc */
+.d-inclusions{padding-left:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:4px 20px;margin-top:8px;}
+.d-inclusions li{font-size:12.5px;color:var(--ink);padding:2px 0;display:flex;gap:6px;align-items:flex-start;}
+.d-inclusions li::before{content:attr(data-n)'.';color:var(--accent);font-weight:600;flex-shrink:0;min-width:22px;}
+
+/* fee table */
+.fee-table{width:100%;border-collapse:collapse;margin-top:8px;}
+.fee-table th{
+  text-align:left;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--white);background:var(--ink);padding:9px 12px;font-weight:600;
+}
+.fee-table th:last-child{text-align:right;}
+.fee-table td{padding:11px 12px;border-bottom:1px solid var(--border);font-size:12.5px;vertical-align:top;}
+.fee-table td:last-child{text-align:right;font-family:'DM Mono',monospace;color:var(--accent2);font-weight:500;white-space:nowrap;}
+.fee-table tr:nth-child(even) td{background:#faf9f7;}
+.fee-table tr:last-child td{border-bottom:none;}
+.fee-pct{font-size:11px;color:var(--pale);display:block;}
+
+/* fee summary */
+.fee-summary{
+  background:var(--ink);color:var(--white);border-radius:4px;
+  padding:16px 20px;margin-top:16px;
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;
+}
+.fee-s-item{}
+.fee-s-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#78716c;margin-bottom:4px;}
+.fee-s-val{font-family:'DM Mono',monospace;font-size:15px;color:var(--accent);font-weight:500;}
+
+/* note box */
+.note-box{
+  background:#fffbeb;border-left:3px solid var(--accent);
+  padding:12px 16px;border-radius:0 6px 6px 0;margin:12px 0;
+  font-style:italic;font-size:12px;color:#78350f;line-height:1.75;
+}
+.note-box-label{font-weight:600;font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;display:block;}
+
+.highlight-box{
+  background:var(--highlight);padding:12px 16px;border-radius:4px;margin:12px 0;
+  font-style:italic;font-size:12.5px;color:var(--ink);line-height:1.8;
+}
+
+/* signatures */
+.sig-row{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  padding:20px 0 8px;margin-top:16px;
+  border-top:1px solid var(--border);
+}
+.sig-col{text-align:center;min-width:160px;}
+.sig-role{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);margin-bottom:4px;}
+.sig-line{border-bottom:1px solid var(--ink);width:160px;height:36px;margin:0 auto 6px;}
+.sig-name{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--ink);font-weight:600;}
+
+/* footer */
+.df{
+  border-top:2px solid var(--ink);padding:14px 48px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;color:var(--pale);
+}
+.df strong{color:var(--mid);}
+
+/* page break marker */
+.page-break-line{border:none;border-top:1px dashed #e0ddd8;margin:28px -48px;opacity:.5;}
+
+/* ── UTILS ── */
+.mt8{margin-top:8px;}
+.mt12{margin-top:12px;}
+
+/* ── PRINT ── */
+@media print{
+  body{background:white;}
+  .app{display:block;}
+  .sidebar,.prev-toolbar{display:none!important;}
+  .preview{padding:0;background:white;}
+  .doc{box-shadow:none;width:100%;}
+  .page-break-line{display:none;}
+}
+
+/* ── SCROLL ── */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.15);border-radius:3px;}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:28px;right:28px;z-index:999;
+  background:var(--ink);color:#d6d3d1;
+  padding:11px 18px;border-radius:7px;border-left:3px solid var(--accent);
+  font-size:12px;box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  transform:translateY(70px);opacity:0;transition:all .3s;pointer-events:none;
+}
+.toast.show{transform:translateY(0);opacity:1;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar">
+  <div class="s-logo">
+    <div class="s-logo-mark">S</div>
+    <div>
+      <div class="s-logo-text">SOW Generator</div>
+      <div class="s-logo-sub">Scope of Work & Agreement</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('t1',this)">Firm</button>
+    <button class="tab-btn" onclick="switchTab('t2',this)">Project</button>
+    <button class="tab-btn" onclick="switchTab('t3',this)">Drawings</button>
+    <button class="tab-btn" onclick="switchTab('t4',this)">Fees</button>
+    <button class="tab-btn" onclick="switchTab('t5',this)">Clauses</button>
+  </div>
+
+  <!-- TAB 1: FIRM -->
+  <div id="t1" class="tab-panel active">
+    <div class="slabel">Company</div>
+    <div class="fg"><label>Firm / Company Name</label><input class="fc" id="firmName" value="Spaceling Designs" oninput="render()"></div>
+    <div class="fg"><label>Architect Name</label><input class="fc" id="archName" value="AR. Muhammed Shafeeque M" oninput="render()"></div>
+    <div class="fg"><label>Designation</label><input class="fc" id="designation" value="Architect" oninput="render()"></div>
+    <div class="fg"><label>Tagline</label><input class="fc" id="tagline" value="Architecture | Interior | Landscape | Event Space Design" oninput="render()"></div>
+    <div class="fg"><label>Phone</label><input class="fc" id="phone" value="8157056351 , 9072056351" oninput="render()"></div>
+    <div class="fg"><label>Email</label><input class="fc" id="email" value="spacelingdesigns@gmail.com" oninput="render()"></div>
+    <div class="fg"><label>Logo Upload</label>
+      <div style="border:1px dashed rgba(255,255,255,0.15);border-radius:7px;padding:12px;text-align:center;position:relative;cursor:pointer;" onclick="document.getElementById('logoIn').click()">
+        <input type="file" id="logoIn" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;" onchange="handleLogo(this)">
+        <img id="logoPrev" style="max-width:100%;max-height:44px;object-fit:contain;display:none;" src="" alt="">
+        <div id="logoTxt" style="font-size:11px;color:#57534e;">Click to upload logo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: PROJECT -->
+  <div id="t2" class="tab-panel">
+    <div class="slabel">Document</div>
+    <div class="fg"><label>Document Type</label>
+      <select class="fc" id="docType" onchange="render()">
+        <option value="SOW">Scope of Work & Agreement</option>
+        <option value="PROPOSAL">Proposal</option>
+        <option value="CONTRACT">Contract</option>
+        <option value="QUOTATION">Quotation</option>
+      </select>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Ref No.</label><input class="fc" id="refNo" value="SD/2024/001" oninput="render()"></div>
+      <div class="fg"><label>Date</label><input class="fc" type="date" id="docDate" oninput="render()"></div>
+    </div>
+    <div class="slabel">Client</div>
+    <div class="fg"><label>Client Name</label><input class="fc" id="clientName" value="Mr. Shameer" oninput="render()"></div>
+    <div class="fg"><label>Client Address</label><textarea class="fc" id="clientAddr" rows="2" oninput="render()"></textarea></div>
+    <div class="slabel">Project</div>
+    <div class="fg"><label>Project Location</label><input class="fc" id="projLoc" value="VENNALA" oninput="render()"></div>
+    <div class="fg"><label>Project Type</label>
+      <select class="fc" id="projType" onchange="render()">
+        <option>Residential Project</option>
+        <option>Commercial Project</option>
+        <option>Interior Project</option>
+        <option>Landscape Project</option>
+        <option>Mixed Use Project</option>
+      </select>
+    </div>
+    <div class="fg"><label>Project Description (optional)</label><textarea class="fc" id="projDesc" rows="2" oninput="render()" placeholder="Brief description…"></textarea></div>
+    <div class="fr">
+      <div class="fg"><label>Area (sqft)</label><input class="fc" id="projArea" type="number" value="1450" oninput="calcFee()"></div>
+      <div class="fg"><label>Supervision Months</label><input class="fc" id="supMonths" type="number" value="12" oninput="render()"></div>
+    </div>
+    <div class="fg"><label>Max Site Visits Included</label><input class="fc" id="maxVisits" type="number" value="9" oninput="render()"></div>
+    <div class="fg"><label>Extra Site Visit Charge (₹)</label><input class="fc" id="visitCharge" type="number" value="5000" oninput="render()"></div>
+  </div>
+
+  <!-- TAB 3: DRAWINGS -->
+  <div id="t3" class="tab-panel">
+    <div class="slabel" style="margin-top:4px;">Included Drawings</div>
+    <div style="font-size:10px;color:#57534e;margin-bottom:10px;">Check items to include. Edit names inline.</div>
+    <div class="drawing-list" id="drawingList"></div>
+    <button class="btn btn-ghost btn-sm" onclick="addDrawing()" style="width:100%;">+ Add Custom Item</button>
+  </div>
+
+  <!-- TAB 4: FEES -->
+  <div id="t4" class="tab-panel">
+    <div class="slabel" style="margin-top:4px;">Rate</div>
+    <div class="fr">
+      <div class="fg"><label>Rate per Sqft (₹)</label><input class="fc" id="ratePerSqft" type="number" value="85" oninput="calcFee()"></div>
+      <div class="fg"><label>Override Total Fee (₹)</label><input class="fc" id="manualFee" type="number" placeholder="Auto" oninput="calcFee()"><div style="font-size:9px;color:#57534e;margin-top:3px;">Leave blank to auto-calculate</div></div>
+    </div>
+    <div class="fg"><label>Advance % (of total)</label><input class="fc" id="advPct" type="number" value="10" oninput="calcFee()"></div>
+    <div class="slabel">Payment Stages</div>
+    <div id="stageRows"></div>
+    <button class="btn btn-ghost btn-sm" onclick="addStage()" style="width:100%;margin-top:4px;">+ Add Stage</button>
+  </div>
+
+  <!-- TAB 5: CLAUSES -->
+  <div id="t5" class="tab-panel">
+    <div class="slabel" style="margin-top:4px;">Clause Toggles</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:12px;color:#a8a29e;">
+        <input type="checkbox" id="cl_gen" checked onchange="render()" style="accent-color:var(--accent);">
+        1.1 General Terms & Conditions
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:12px;color:#a8a29e;">
+        <input type="checkbox" id="cl_exec" checked onchange="render()" style="accent-color:var(--accent);">
+        1.2 Execution of Assignment
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:12px;color:#a8a29e;">
+        <input type="checkbox" id="cl_schedule" checked onchange="render()" style="accent-color:var(--accent);">
+        2.1 Schedule of Service
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:12px;color:#a8a29e;">
+        <input type="checkbox" id="cl_drawing" checked onchange="render()" style="accent-color:var(--accent);">
+        2.2 Drawing Schedule
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:12px;color:#a8a29e;">
+        <input type="checkbox" id="cl_fee" checked onchange="render()" style="accent-color:var(--accent);">
+        3. Service Fee & Payment
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:12px;color:#a8a29e;">
+        <input type="checkbox" id="cl_optional" checked onchange="render()" style="accent-color:var(--accent);">
+        Optional: Supervisor clause
+      </label>
+    </div>
+    <div class="slabel" style="margin-top:20px;">Custom Notes</div>
+    <div class="fg"><label>Additional Notes / Special Terms</label><textarea class="fc" id="customNotes" rows="5" oninput="render()" placeholder="Any additional terms or notes to appear at the end of the document…"></textarea></div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="s-actions">
+    <button class="btn btn-accent" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print / Save PDF
+    </button>
+    <button class="btn btn-ghost btn-sm" onclick="exportJSON()">⬇ Export JSON</button>
+    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importIn').click()">⬆ Import JSON</button>
+    <input type="file" id="importIn" accept=".json" style="display:none" onchange="importJSON(this)">
+  </div>
+</aside>
+
+<!-- ══ PREVIEW ══ -->
+<main class="preview">
+  <div class="prev-toolbar">
+    <div class="prev-title">LIVE PREVIEW</div>
+    <div class="prev-actions">
+      <button class="pbtn pbtn-light" onclick="resetAll()">Reset</button>
+      <button class="pbtn pbtn-dark" onclick="window.print()">⬇ Print / PDF</button>
+    </div>
+  </div>
+  <div class="doc" id="doc"></div>
+</main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DEFAULT DATA ──
+let logoUrl = '';
+
+let drawings = [
+  {on:true, label:'Floor Plans with furniture layout'},
+  {on:true, label:'Elevations ( Exterior )'},
+  {on:true, label:'Sections and larger details of typical and special areas'},
+  {on:true, label:'Structural drawings with details of reinforcement'},
+  {on:true, label:'Large - scale plan and section of staircase handrail'},
+  {on:true, label:'Large - scale plan and elevations of toilets'},
+  {on:true, label:'Door - window details and schedule of openings'},
+  {on:true, label:'All working drawings as required on the site for construction'},
+  {on:true, label:'Electrical layout of the building'},
+  {on:true, label:'Plumbing layout of the building'},
+  {on:true, label:'Painting schedule'},
+  {on:true, label:'Floor and wall tiling details'},
+  {on:true, label:'3D visuals of the building'},
+  {on:true, label:'Drawing required for obtaining Govt. Approvals and Sanction'},
+  {on:true, label:'Approximate estimated for the construction'},
+  {on:true, label:'Interior 3D visuals'},
+  {on:true, label:'Elevations ( Interior )'},
+  {on:true, label:'Ceiling layout'},
+  {on:true, label:'Flooring layout'},
+  {on:true, label:'Interior fixed furniture and paneling drawings'},
+  {on:true, label:'Furniture selections and mood board'},
+  {on:true, label:'Kitchen cupboard drawings'},
+];
+
+let stages = [
+  {desc:'Total Service Fee after the layout Plans are Finalised', pct:20},
+  {desc:'Total Service Fee after the submission of the basic Drawings (Floor Plans, & 3D Views). Sanction drawings', pct:20},
+  {desc:'Total Service Fee during the time of, Working drawings stage 1', pct:20},
+  {desc:'Total Service Fee during the time of, Working drawing Stage 2', pct:20},
+  {desc:'Total Service Fee during the time of Completion', pct:10},
+];
+
+// ── INIT ──
+document.getElementById('docDate').value = new Date().toISOString().split('T')[0];
+renderDrawings();
+renderStageRows();
+render();
+
+// ── TABS ──
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── LOGO ──
+function handleLogo(input) {
+  const f = input.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    logoUrl = e.target.result;
+    document.getElementById('logoPrev').src = logoUrl;
+    document.getElementById('logoPrev').style.display = 'block';
+    document.getElementById('logoTxt').style.display = 'none';
+    render();
+  };
+  r.readAsDataURL(f);
+}
+
+// ── DRAWINGS ──
+function renderDrawings() {
+  const el = document.getElementById('drawingList');
+  el.innerHTML = drawings.map((d, i) => `
+    <div class="drawing-item">
+      <input type="checkbox" id="dc${i}" ${d.on?'checked':''} onchange="drawings[${i}].on=this.checked;render()">
+      <input type="text" value="${d.label}" oninput="drawings[${i}].label=this.value;render()">
+      <button class="rmv-btn" title="Remove" onclick="drawings.splice(${i},1);renderDrawings();render()">✕</button>
+    </div>
+  `).join('');
+}
+function addDrawing() {
+  drawings.push({on:true, label:'New Drawing Item'});
+  renderDrawings(); render();
+}
+
+// ── FEE CALC ──
+function getTotalFee() {
+  const manual = Number(document.getElementById('manualFee').value);
+  if(manual) return manual;
+  const area = Number(document.getElementById('projArea').value)||0;
+  const rate = Number(document.getElementById('ratePerSqft').value)||0;
+  return area * rate;
+}
+function calcFee() { renderStageRows(); render(); }
+
+function renderStageRows() {
+  const total = getTotalFee();
+  const el = document.getElementById('stageRows');
+  el.innerHTML = stages.map((s,i)=>`
+    <div class="stage-row">
+      <div class="stage-row-hd">
+        <span class="stage-num">Stage ${String(i+1).padStart(2,'0')}</span>
+        <button class="rmv-btn" onclick="stages.splice(${i},1);renderStageRows();render()">✕</button>
+      </div>
+      <div class="fg"><label>Description</label>
+        <textarea class="fc" rows="2" oninput="stages[${i}].desc=this.value;render()">${s.desc}</textarea>
+      </div>
+      <div class="fg"><label>Percentage (%)</label>
+        <input class="fc" type="number" value="${s.pct}" oninput="stages[${i}].pct=Number(this.value);renderStageRows();render()">
+      </div>
+      <div style="font-size:11px;color:#78716c;margin-top:-6px;">= ₹${fmt(total*s.pct/100)}</div>
+    </div>
+  `).join('');
+}
+function addStage() {
+  stages.push({desc:'New Payment Stage', pct:10});
+  renderStageRows(); render();
+}
+
+// ── FORMAT ──
+function fmt(n) { return Number(n).toLocaleString('en-IN'); }
+function fmtD(d) {
+  if(!d) return ''; const [y,m,day]=d.split('-');
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${day} ${months[Number(m)-1]} ${y}`;
+}
+
+// ── RENDER ──
+function render() {
+  const firmName = v('firmName'), archName = v('archName'), desig = v('designation');
+  const tagline = v('tagline'), phone = v('phone'), email = v('email');
+  const docType = v('docType'), refNo = v('refNo'), docDate = v('docDate');
+  const clientName = v('clientName'), clientAddr = v('clientAddr');
+  const projLoc = v('projLoc'), projType = v('projType'), projDesc = v('projDesc');
+  const projArea = v('projArea'), supMonths = v('supMonths');
+  const maxVisits = v('maxVisits'), visitCharge = v('visitCharge');
+  const customNotes = v('customNotes');
+  const rate = Number(v('ratePerSqft'))||0;
+  const totalFee = getTotalFee();
+  const advPct = Number(v('advPct'))||10;
+  const advance = totalFee * advPct / 100;
+
+  const cl = id => document.getElementById(id).checked;
+
+  const logoHtml = logoUrl
+    ? `<img src="${logoUrl}" style="width:100%;height:100%;object-fit:contain;">`
+    : `<span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--accent);font-weight:700;">${firmName.slice(0,2).toUpperCase()}</span>`;
+
+  const docTypeLabel = {SOW:'Scope of Work & Agreement', PROPOSAL:'Proposal', CONTRACT:'Contract', QUOTATION:'Quotation'}[docType]||docType;
+
+  // sig row
+  const sigRow = () => `
+    <div class="sig-row">
+      <div class="sig-col">
+        <div class="sig-role">Client</div>
+        <div class="sig-line"></div>
+        <div class="sig-name">${clientName||'Client'}</div>
+      </div>
+      <div class="sig-col">
+        <div class="sig-role">${desig||'Architect'}</div>
+        <div class="sig-line"></div>
+        <div class="sig-name">${archName}</div>
+      </div>
+    </div>
+  `;
+
+  // SECTION 1.1
+  const s11 = cl('cl_gen') ? `
+    <div class="ds">
+      <div class="ds-num">1. Terms &amp; Conditions</div>
+      <div class="ds-sub">1.1 General</div>
+      <div class="dp">The agreement is for consulting services including <strong><em>Architectural &amp; Interior Services for the ${projType} at</em></strong> <span style="color:var(--accent2);font-weight:600;">${projLoc||'[Location]'}</span>${projDesc ? ' — ' + projDesc : ''}</div>
+      <div class="dp">The client shall provide all possible assistance and data's as requested by the Consultant for Design.</div>
+      <div class="dp">It shall be the responsibility of the Client to furnish accurate site survey details, and the consultants shall be responsible only from the date such details are furnished. If any in fructuous work is involved on account of wrong survey, the consultant shall be additionally remunerated for it.</div>
+      <div class="dp">The consultant will only provide Architectural services as indicated in the attached schedule of services.</div>
+      <div class="dp">As part of services, the consultants shall, from time to time, certify that their drawings are being correctly interpreted at site and the finishing is of the acceptable quality and in case of adverse certifications, the client shall withhold the payments of the contractor until the defects have been rectified.</div>
+      <div class="dp">In case the consultant firm is required to verify the bills of the contractors, field measurements of the work will be carried out by a quantity surveyor (who will be appointed by the Client and Architect on mutual understanding and the remuneration will be given by the client).</div>
+      <div class="dp">The consultant's fee structure is based on the tendered cost of the total cost of the total project or on prorate basis of the area under construction. Where whole or part of the project is not executed, the fee will be on the cost calculated on the prevailing rates, that is, market rates or scheduled rates plus current tender percentage.</div>
+      <div class="note-box"><span class="note-box-label">Note</span>Consultant services will also include preparing plans for approval from local authorities / statutory bodies. Client shall be responsible for securing the approval. In case the client is not able to carry out the formalities, he/she may request the consultant to assign a person to carry out the work and all charges incurred therein shall be reimbursed by the client.</div>
+      ${sigRow()}
+    </div>
+    <hr class="page-break-line">
+  ` : '';
+
+  // SECTION 1.2
+  const s12 = cl('cl_exec') ? `
+    <div class="ds">
+      <div class="ds-sub">1.2 Execution of the Assignment</div>
+      <div class="dp">The consultants must have authority of his client before initiating any stage of his duties.</div>
+      <div class="dp">All the stage of work shall be approved by the consultant and informed to the client according to the time schedule mutually agreed upon. The work throughout the stipulated period of contract will be carried out with diligence, time being the essence of the contract.</div>
+      <div class="dp">The consultants shall prepare Basic drawings, Architectural design detail, Drawings for approval, Work specification and Final completion drawing. Service charges for all other associated MEP and Structural consultants (All MEP drawings, Structural Drawings) shall be borne by the client.</div>
+      <div class="dp">The consultants shall assume full responsibility for the design and specification for items described in the scope of work. The client will have full access to the details of the calculations and the structural designs for the purpose of scrutiny for satisfying themselves as to their correctness. The structural engineers will render all possible help for the above scrutiny.</div>
+      <div class="dp">The consultants shall supply to the clients, one set of all final drawings, specifications and other particulars in accordance with the stage of work. Any additional sets required by the clients shall be paid for on actual cost basis. On completion of the work, the consultant will prepare and submit two sets of as Architectural as built drawings (One set of reproduction prints) of the buildings.</div>
+      ${sigRow()}
+    </div>
+    <hr class="page-break-line">
+  ` : '';
+
+  // SECTION 2.1
+  const s21 = cl('cl_schedule') ? `
+    <div class="ds">
+      <div class="ds-num">2. Schedule of Service</div>
+      <div class="ds-sub">2.1 General</div>
+      <div class="dp">The consultant shall after taking instruction from client render the following services.</div>
+      <div class="dp">Discussion on the site evaluation and site analysis with basic approach to circulation, activity distribution and interaction and external linkage.</div>
+      <div class="dp">Modify the conceptual design incorporating required changes and prepare preliminary drawings and designs and 3D drawing for the client's approval.</div>
+      <div class="dp">Prepare drawing necessary for submission to statutory bodies for sanction and schedule of quantities sufficient to prepare estimates of cost.</div>
+      <div class="dp">Prepare Architecture drawings, Work Schedule, BOQ.</div>
+      <div class="dp">Visit the site of work and provide periodic supervision as indicated in the attached sheet for a period of <strong>${supMonths||12} months</strong> to clarify any decision or interpretation of the drawing and specifications that may be necessary to ensure that the project proceeds generally in accordance with conditions of contract. All additional site visits other than those listed may be billed separately to the Clients viz. The Consultants site visit shall be requested 2 - 3 days prior to intended date of site visit.</div>
+      ${cl('cl_optional') ? `
+      <div class="highlight-box"><strong>Optional:</strong> For frequent or constant supervision, a work supervisor shall be appointed. He shall be nominated or appointed by the Consultants and shall be under the direction and control of the consultants. He shall be paid by the client or, alternatively, may be employed by the consultant, who shall be reimbursed the cost of the said employment including overheads.</div>
+      ` : ''}
+      ${sigRow()}
+    </div>
+    <hr class="page-break-line">
+  ` : '';
+
+  // SECTION 2.2 DRAWINGS
+  const activeDr = drawings.filter(d=>d.on);
+  const s22 = cl('cl_drawing') ? `
+    <div class="ds">
+      <div class="ds-sub">2.2 Drawing Schedule</div>
+      <div class="ds-sub" style="margin-top:10px;">Inclusions</div>
+      ${activeDr.length ? `
+      <ol class="d-inclusions">
+        ${activeDr.map((d,i)=>`<li data-n="${i+1}">${d.label}</li>`).join('')}
+      </ol>
+      ` : '<div class="dp" style="color:var(--pale);font-style:italic;">No drawings selected.</div>'}
+      ${sigRow()}
+    </div>
+    <hr class="page-break-line">
+  ` : '';
+
+  // SECTION 3 FEES
+  const stageRows = stages.map((s,i)=>{
+    const amt = totalFee * s.pct / 100;
+    return `<tr>
+      <td style="color:var(--pale);font-weight:500;white-space:nowrap;">Stage ${String(i+1).padStart(2,'0')}:</td>
+      <td>${s.desc}</td>
+      <td><span class="fee-pct">(${s.pct}% of total fee)</span></td>
+      <td>₹${fmt(amt)}/-</td>
+    </tr>`;
+  }).join('');
+
+  const s3 = cl('cl_fee') ? `
+    <div class="ds">
+      <div class="ds-num">3. Service Fee</div>
+      <div class="dp-red">Rs. ${rate}/- per Sqft of total area</div>
+      <div class="dp-red">Service fee amount: Area in Sqft (${fmt(projArea)}) × Rs. ${rate}/- = Rs. <strong>${fmt(totalFee)}/- Only.</strong></div>
+      <div class="dp-red" style="margin-top:6px;">Service Advance Fee Amount (${advPct}% of total Fee) = Rs. ${fmt(advance)}/-</div>
+      <div class="ds-sub" style="margin-top:18px;">3.1 Mode of Payment</div>
+      <div class="dp">A maximum of <strong>${maxVisits||9} site visits</strong> will be made for this remuneration. Further on request site visits will be charged Rs. <span style="color:var(--accent2);">${fmt(visitCharge)}</span>/- per visit.</div>
+      <div class="dp">For each of the service in scope of, the Consultants shall be paid in the following stage consistent with the work done plus reimbursable expenses as agreed upon. Payment made of the Consultants is on account.</div>
+      <table class="fee-table" style="margin-top:16px;">
+        <thead><tr><th>Stage</th><th>Description</th><th>Basis</th><th>Amount</th></tr></thead>
+        <tbody>${stageRows}</tbody>
+      </table>
+      <div class="fee-summary">
+        <div class="fee-s-item"><div class="fee-s-label">Rate / sqft</div><div class="fee-s-val">₹${rate}/-</div></div>
+        <div class="fee-s-item"><div class="fee-s-label">Total Fee</div><div class="fee-s-val">₹${fmt(totalFee)}/-</div></div>
+        <div class="fee-s-item"><div class="fee-s-label">Advance (${advPct}%)</div><div class="fee-s-val">₹${fmt(advance)}/-</div></div>
+      </div>
+      ${sigRow()}
+    </div>
+  ` : '';
+
+  // CUSTOM NOTES
+  const notes = customNotes ? `
+    <hr class="page-break-line">
+    <div class="ds">
+      <div class="ds-sub">Additional Notes & Special Terms</div>
+      <div class="dp">${customNotes.replace(/\n/g,'<br>')}</div>
+      ${sigRow()}
+    </div>
+  ` : '';
+
+  document.getElementById('doc').innerHTML = `
+    <!-- HEADER -->
+    <div class="dh">
+      <div class="dh-brand">
+        <div class="dh-logo">${logoHtml}</div>
+        <div>
+          <div class="dh-firm">${firmName}</div>
+          <div class="dh-tag">${tagline}</div>
+        </div>
+      </div>
+      <div class="dh-right">
+        <div class="dh-arch">${archName}</div>
+        ${phone ? `<div>Ph: ${phone}</div>` : ''}
+        ${email ? `<div>${email}</div>` : ''}
+        ${docDate ? `<div style="margin-top:4px;color:var(--pale);">Date: ${fmtD(docDate)}</div>` : ''}
+      </div>
+    </div>
+
+    <!-- TITLE BANNER -->
+    <div class="dt">
+      <div class="dt-main">${docTypeLabel}</div>
+      <div class="dt-sub">
+        ${projType} at ${projLoc||'[Location]'} &nbsp;|&nbsp; Ref: ${refNo}
+        ${clientName ? ` &nbsp;|&nbsp; ${clientName}` : ''}
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="db">
+      ${s11}${s12}${s21}${s22}${s3}${notes}
+    </div>
+
+    <!-- FOOTER -->
+    <div class="df">
+      <div><strong>${firmName}</strong> — ${tagline}</div>
+      <div>Ph: ${phone} &nbsp;|&nbsp; ${email}</div>
+    </div>
+  `;
+}
+
+function v(id){ return document.getElementById(id).value; }
+
+// ── EXPORT / IMPORT ──
+function gatherData() {
+  const ids=['firmName','archName','designation','tagline','phone','email',
+    'docType','refNo','docDate','clientName','clientAddr','projLoc','projType',
+    'projDesc','projArea','supMonths','maxVisits','visitCharge','ratePerSqft',
+    'manualFee','advPct','customNotes'];
+  const out={logo:logoUrl,drawings,stages};
+  ids.forEach(id=>out[id]=v(id));
+  ['cl_gen','cl_exec','cl_schedule','cl_drawing','cl_fee','cl_optional'].forEach(id=>{
+    out[id]=document.getElementById(id).checked;
+  });
+  return out;
+}
+function exportJSON(){
+  const blob=new Blob([JSON.stringify(gatherData(),null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='scope-of-work.json';a.click();toast('Exported!');
+}
+function importJSON(input){
+  const f=input.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const d=JSON.parse(e.target.result);
+      Object.keys(d).forEach(k=>{
+        const el=document.getElementById(k);
+        if(!el)return;
+        if(el.type==='checkbox') el.checked=d[k];
+        else el.value=d[k];
+      });
+      if(d.logo){logoUrl=d.logo;const lp=document.getElementById('logoPrev');lp.src=d.logo;lp.style.display='block';document.getElementById('logoTxt').style.display='none';}
+      if(d.drawings){drawings=d.drawings;renderDrawings();}
+      if(d.stages){stages=d.stages;renderStageRows();}
+      render();toast('Imported!');
+    }catch(err){toast('Error: invalid JSON');}
+  };
+  r.readAsText(f);input.value='';
+}
+
+// ── RESET ──
+function resetAll(){
+  if(!confirm('Reset everything?'))return;
+  logoUrl='';
+  document.getElementById('logoPrev').style.display='none';
+  document.getElementById('logoTxt').style.display='block';
+  drawings=[{on:true,label:'Floor Plans with furniture layout'}];
+  stages=[{desc:'Layout Plans Finalised',pct:20}];
+  ['firmName','archName','designation','tagline','phone','email','docType','refNo',
+   'clientName','clientAddr','projLoc','projType','projDesc','projArea','supMonths',
+   'maxVisits','visitCharge','ratePerSqft','manualFee','advPct','customNotes'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+  document.getElementById('docDate').value=new Date().toISOString().split('T')[0];
+  renderDrawings();renderStageRows();render();toast('Reset done');
+}
+
+// ── TOAST ──
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2600);
+}
+</script>
+</body>
+</html>
